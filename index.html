@@ -61,7 +61,7 @@
 </head>
 <body>
 <div class="header">
-  <div><div class="header-title">RAMIFY — Dashboard Financier &amp; CA</div><div class="meta">Sources : Auto-genere le 30/04/2026 15:33</div></div>
+  <div><div class="header-title">RAMIFY — Dashboard Financier &amp; CA</div><div class="meta">Sources : Auto-genere le 30/04/2026 15:36</div></div>
   <div style="text-align:right"><div class="meta">Période arrêtée</div><div style="color:#fff;font-weight:700;font-size:13px">Q1 2026 — Mars 2026</div></div>
 </div>
 <div class="page">
@@ -128,8 +128,8 @@ const REV_B=[null, null, null, null, null, null, null, null, null, null, null, n
 const EBI_R=[-180.13, -238.62, -330.4, -359.03, -251.96, -401.72, -317.4, -264.96, -387.1, -324.21, -337.52, -154.9, -427.73, -424.26, -359.28, null, null, null, null, null, null, null, null, null];
 const EBI_B=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, -359.28, -366.95, -312.43, -348.27, -308.43, -243.28, -345.3, -294.54, -341.29, -229.29];
 const CASH={L:["D\u00e9c 21", "Jan 22", "F\u00e9v 22", "Mar 22", "Avr 22", "Mai 22", "Jui 22", "Jui 22", "Ao\u00fb 22", "Sep 22", "Oct 22", "Nov 22", "Jan 23", "F\u00e9v 23", "Mar 23", "Avr 23", "Mai 23", "Jui 23", "Jui 23", "Ao\u00fb 23", "Sep 23", "Oct 23", "Nov 23", "D\u00e9c 23", "Jan 24", "F\u00e9v 24", "Mar 24", "Avr 24", "Mai 24", "Jui 24", "Jui 24", "Ao\u00fb 24", "Sep 24", "Oct 24", "Nov 24", "D\u00e9c 24", "Jan 25", "F\u00e9v 25", "Mar 25", "Avr 25", "Mai 25", "Jui 25", "Jui 25", "Ao\u00fb 25", "Sep 25", "Oct 25", "Nov 25", "D\u00e9c 25", "Jan 26", "F\u00e9v 26", "Mar 26", "Avr 26", "Mai 26", "Jui 26", "Jui 26", "Ao\u00fb 26", "Sep 26", "Oct 26", "Nov 26", "D\u00e9c 26", "Jan 27", "F\u00e9v 27", "Mar 27", "Avr 27"],r:[155.5, 119.5, 88.5, 48.3, 157.4, 110.8, 65.1, 1983.5, 1900.4, 1889.4, 1745.0, 1914.9, 1726.1, 1499.6, 1422.7, 1309.3, 1618.9, 2204.5, 1955.3, 1897.8, 1803.3, 1623.8, 1432.8, 1279.8, 1097.1, 958.2, 848.8, 634.1, 495.9, 7216.1, 6902.4, 6326.7, 6711.9, 6473.3, 6740.2, 8019.6, 7639.7, 7340.0, 7068.8, 6566.3, 6160.7, 5867.1, 5393.3, 4957.3, 4591.2, 4191.6, 3613.7, 5618.7, 5195.4, 4762.7, 4457.2, null, null, null, null, null, null, null, null, null, null, null, null, null],p:[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 4457.2, 3677.0, 3204.5, 3331.2, 2847.9, 2596.2, 2204.5, 1977.2, 1599.7, 1203.3, 768.2, 488.5, 314.4, -424.8]};
-const UP_M=[44308.6, 32513.0, 37812.7, 36960.4, 28149.9, 25347.5, 15202.9, 32531.6, 30197.7, 44944.7, 53528.9, 52895.4, 51727.5, 36330.4, 27703.5, null, null, null, null, null, null, null, null, null];
-const MG_M=[69676.0, 70365.2, 71518.6, 74833.3, 75288.3, 76097.2, 99886.4, 101198.2, 102474.5, 127499.7, 130190.9, 133243.5, 156318.6, 163149.5, 162091.4, null, null, null, null, null, null, null, null, null];
+const UP_M=[44.3, 32.5, 37.8, 37.0, 28.1, 25.3, 15.2, 32.5, 30.2, 44.9, 53.5, 52.9, 51.7, 36.3, 27.7, null, null, null, null, null, null, null, null, null];
+const MG_M=[69.7, 70.4, 71.5, 74.8, 75.3, 76.1, 99.9, 101.2, 102.5, 127.5, 130.2, 133.2, 156.3, 163.1, 162.1, null, null, null, null, null, null, null, null, null];
 const PCT_UP=[0.389,0.316,0.346,0.331,0.272,0.250,0.132,0.243,0.228,0.260,0.291,0.284,0.248,0.182,0.146,0.18,0.17,0.16,0.14,0.20,0.22,0.22,0.22,0.23];
 const UP_F=[...UP_M],MG_F=[...MG_M];
 REV_B.forEach((r,i)=>{if(r!==null&&UP_M[i]===null){UP_F[i]=Math.round(PCT_UP[i]*r*10)/10;MG_F[i]=Math.round((1-PCT_UP[i])*r*10)/10;}});
