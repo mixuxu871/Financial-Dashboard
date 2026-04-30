@@ -61,7 +61,7 @@
 </head>
 <body>
 <div class="header">
-  <div><div class="header-title">RAMIFY — Dashboard Financier &amp; CA</div><div class="meta">Sources : Auto-genere le 30/04/2026 15:21</div></div>
+  <div><div class="header-title">RAMIFY — Dashboard Financier &amp; CA</div><div class="meta">Sources : Auto-genere le 30/04/2026 15:27</div></div>
   <div style="text-align:right"><div class="meta">Période arrêtée</div><div style="color:#fff;font-weight:700;font-size:13px">Q1 2026 — Mars 2026</div></div>
 </div>
 <div class="page">
@@ -136,7 +136,7 @@ REV_B.forEach((r,i)=>{if(r!==null&&UP_M[i]===null){UP_F[i]=Math.round(PCT_UP[i]*
 const UA=UP_F.map((v,i)=>i<15?v:null),UE=UP_F.map((v,i)=>i>=15?v:null);
 const MA=MG_F.map((v,i)=>i<15?v:null),ME=MG_F.map((v,i)=>i>=15?v:null);
 const AUM=[157.1, 166.9, 171.2, 177.8, 192.0, 198.6, 219.5, 230.8, 252.5, 282.3, 298.4, 320.8, 338.5, 356.5, 358.2, 382.6, 406.3, 431.5, 457.6, 484.6, 512.7, 541.8, 572.1, 603.7];
-const CA=[["Upfront fees", 51727, 36330, 27703, 95994, 27704, 115762, "sub"], ["Mgmt fees", 156318, 163149, 162091, 195617, 162091, 481560, "sub"], ["Revenue Ramify", 208046, 199480, 189794, 291611, 189795, 597321, "tot"], ["Revenue Valhyr", 0, 0, 0, 0, 15724, 45641, "sub"], ["Revenue", 222805, 214637, 205519, 308395, 205519, 642962, "grand"], ["KPI Ramify", null, null, null, null, null, null, "kpi-hdr"], ["Rec. ARR (Ek)", 1875, 1957, 1945, null, 1945, 5779, "kpi", 1], ["ARR RMF (Ek)", 2496, 2393, 2277, null, 2278, 7168, "kpi", 1]];
+const CA=[["Entry SCPI", 10055, 18132, 15803, 38154, 15804, 43991, "row", 1], ["Entry Club-Deal Art", 13200, 2400, 10600, 17300, 10600, 26200, "row", 1], ["Entry Club-Deal Immo", 26800, 9000, 0, 30890, 0, 35800, "row", 1], ["Entry PE", 375, 0, 0, 5008, 0, 375, "row", 1], ["Entry Crypto", 1150, 1150, 1150, 1269, 1150, 3450, "row", 1], ["Entry PS", 0, 3000, 0, 2313, 0, 3000, "row", 1], ["Entry Invest", 146, 148, 149, 1038, 150, 445, "row", 1], ["Autres", 0, 2500, 0, 22, 0, 2500, "row", 1], ["Upfront fees", 51727, 36330, 27703, 95994, 27704, 115762, "sub"], ["Management Invest", 106065, 111868, 109710, 134157, 109710, 327644, "row", 1], ["Management PE", 44539, 45554, 46673, 54873, 46673, 136767, "row", 1], ["Management Cash", 3187, 3197, 3178, 4609, 3179, 9564, "row", 1], ["Management SCPI", 2382, 2385, 2385, 1978, 2386, 7154, "row", 1], ["Management PS", 143, 143, 143, 0, 143, 430, "row", 1], ["Management fees / MRR", 156318, 163149, 162091, 195617, 162091, 481560, "sub"], ["Revenue Ramify", 208046, 199480, 189794, 291611, 189795, 597321, "tot"], ["Management X-Fund", 14759, 15157, 15724, 16784, 15724, 45641, "row", 1], ["Revenue Valhyr", 14759, 15157, 15724, 16784, 15724, 45641, "sub"], ["Revenue", 222805, 214637, 205519, 308395, 205519, 642962, "grand"], ["KPI Ramify", null, null, null, null, null, null, "kpi-hdr"], ["Rec. ARR (Ek)", 1875, 1957, 1945, null, 1945, 5779, "kpi", 1], ["ARR RMF (Ek)", 2496, 2393, 2277, null, 2278, 7168, "kpi", 1]];
 function fN(v){if(v===null||v===undefined)return"—";if(typeof v==="string")return v;const s=Math.round(Math.abs(v)).toLocaleString("fr-FR");return v<0?"("+s+")":s;}
 function fP(v){if(v===null||v===undefined)return"—";const s=Math.round(Math.abs(v*100));return v<0?"("+s+")%":s+"%";}
 function fK(v,d=1){if(v===null)return"—";const s=Math.abs(v).toLocaleString("fr-FR",{minimumFractionDigits:d,maximumFractionDigits:d});return v<0?"("+s+")":s;}
