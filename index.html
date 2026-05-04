@@ -172,9 +172,9 @@ const caUp=CA.find(function(r){return r[0]==="Upfront fees";});
 const caMg=CA.find(function(r){return r[0]==="Management fees / MRR";});
 const upA=caUp?Math.round(caUp[4]/100)/10:0,mgA=caMg?Math.round(caMg[4]/100)/10:0;
 const upRF=caUp?Math.round((caUp[5]||0)/100)/10:0,mgRF=caMg?Math.round((caMg[5]||0)/100)/10:0;
-const upYA=caUp?Math.round(caUp[5]/100)/10:0,mgYA=caMg?Math.round(caMg[5]/100)/10:0;
-const upYB=caUp?Math.round(caUp[6]/100)/10:0,mgYB=caMg?Math.round(caMg[6]/100)/10:0;
-new Chart(document.getElementById("c-ca-mars"),{type:"bar",data:{labels:["Upfront","Mgmt / Récurrent"],datasets:[{label:"Avr 26RF",data:[upAvr,mgAvr],backgroundColor:["#2E75B6","#375623"],borderRadius:4,barPercentage:.4},{label:"Mar 26A",data:[upMar,mgMar],backgroundColor:["rgba(46,117,182,.25)","rgba(55,86,35,.25)"],borderColor:["#2E75B6","#375623"],borderWidth:2,borderRadius:4,barPercentage:.4}]},options:{plugins:{legend:{position:"top",labels:{boxWidth:10,font:{size:9},padding:8}}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}}}}});
+const upYA=caUp?Math.round(caUp[6]/100)/10:0,mgYA=caMg?Math.round(caMg[6]/100)/10:0;
+const upYB=caUp?Math.round(caUp[7]/100)/10:0,mgYB=caMg?Math.round(caMg[7]/100)/10:0;
+new Chart(document.getElementById("c-ca-mars"),{type:"bar",data:{labels:["Upfront","Mgmt / Récurrent"],datasets:[{label:"Apr-26",data:[upA,mgA],backgroundColor:["#2E75B6","#375623"],borderRadius:4,barPercentage:.4},{label:"Apr.26RF",data:[upRF,mgRF],backgroundColor:["rgba(46,117,182,.25)","rgba(55,86,35,.25)"],borderColor:["#2E75B6","#375623"],borderWidth:2,borderRadius:4,barPercentage:.4}]},options:{plugins:{legend:{position:"top",labels:{boxWidth:10,font:{size:9},padding:8}}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}}}}});
 new Chart(document.getElementById("c-ca-ytd"),{type:"bar",data:{labels:["Upfront","Mgmt / Récurrent"],datasets:[{label:"YTD 26A",data:[upYA,mgYA],backgroundColor:["#2E75B6","#375623"],borderRadius:4,barPercentage:.4},{label:"YTD 26B",data:[upYB,mgYB],backgroundColor:["rgba(46,117,182,.25)","rgba(55,86,35,.25)"],borderColor:["#2E75B6","#375623"],borderWidth:2,borderRadius:4,barPercentage:.4}]},options:{plugins:{legend:{position:"top",labels:{boxWidth:10,font:{size:9},padding:8}}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}}}}});
 });
 </script>
