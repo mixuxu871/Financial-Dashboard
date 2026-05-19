@@ -157,50 +157,52 @@ CA.forEach(function(row){
   ctb.appendChild(tr);
 });
 
-// KPI cards et titres dynamiques
-(function(){
-  var n26=EBI_R.slice(12).filter(function(v){return v!==null;}).length;
-  var lastMon=n26>0?ALL_L[11+n26]:'';
-  var per=n26>0?'Jan\u2013'+lastMon.split(' ')[0]:'Q1';
-  var perFull=per+' 2026';
-  var elh=document.getElementById('header-period');if(elh)elh.textContent='YTD '+perFull;
-  var e3=document.getElementById('chart-rev-yoy-title');if(e3)e3.textContent='Revenue YTD '+perFull+' — YoY';
-  var e4=document.getElementById('chart-ebi-yoy-title');if(e4)e4.textContent='EBITDA YTD '+perFull+' — YoY';
-  var e5=document.getElementById('chart-costs-title');if(e5)e5.textContent='Répartition coûts '+perFull;
-  ['pl-h23','pl-h24','pl-h25'].forEach(function(id,i){var h=document.getElementById(id);if(h)h.textContent='YTD '+(23+i)+'A';});
-  var h26a=document.getElementById('pl-h26a');if(h26a)h26a.textContent='YTD '+perFull;
-  var h26b=document.getElementById('pl-h26b');if(h26b)h26b.textContent='YTD 26B';
-  var hec=document.getElementById('pl-hec');if(hec)hec.textContent='Écart €k';
-  var hvs=document.getElementById('pl-hvs');if(hvs)hvs.textContent='vs YTD '+per+' 25A';
-  var el=document.getElementById('kpi-section-title');if(el)el.innerHTML='KPIs P&amp;L \u2014 YTD '+perFull;
-  var el2=document.getElementById('pl-section-title');if(el2)el2.textContent='P&L Comparatif YTD '+per+' \xb7 \u20acK';
-  function fv(v){if(v===null||v===undefined)return'\u2014';var s=Math.abs(v).toLocaleString('fr-FR',{minimumFractionDigits:1,maximumFractionDigits:1});return(v<0?'('+s+')':s)+' \u20ack';}
-  function fp(a,b){if(!b)return'\u2014';var p=(a-b)/Math.abs(b)*100;return(p>=0?'+':'')+p.toFixed(1)+'%';}
-  function fec(a,b){if(b===null||b===undefined||b===0)return'\u2014';var e=a-b,p=e/Math.abs(b)*100;var s=Math.abs(e).toLocaleString('fr-FR',{minimumFractionDigits:1,maximumFractionDigits:1});return(e<0?'('+s+')':s)+' \u20ack ('+(p>=0?'+':'')+p.toFixed(1)+'%)';}
-  var rA=YTD.revenue[3],rA25=YTD.revenue[2],rB=YTD.revenue[4];
-  var eA=YTD.ebitda[3],eA25=YTD.ebitda[2],eB=YTD.ebitda[4];
-  var lastRI=-1;for(var i=CASH.r.length-1;i>=0;i--){if(CASH.r[i]!==null){lastRI=i;break;}}
-  var tresVal=lastRI>=0?CASH.r[lastRI]:null;var tresMon=lastRI>=0?CASH.L[lastRI]:'\u2014';
-  var cashoutLbl='\u2014',runwayM=null;
-  for(var j=lastRI+1;j<CASH.p.length;j++){if(CASH.p[j]!==null&&CASH.p[j]<=0){cashoutLbl=CASH.L[j];runwayM=j-lastRI;break;}}
-  var runwayStr=runwayM!==null?'~'+runwayM+' mois':'\u2014';
-  var grid=document.getElementById('kpi-grid');if(!grid)return;
-  grid.innerHTML=
-    "<div class=\'kpi-card\'><div class=\'kpi-label\'>Revenue YTD "+perFull+"</div>"+
-    "<div class=\'kpi-value\'>"+fv(rA)+"</div>"+
-    "<div class=\'kpi-sub "+(rA>=rA25?'pos':'neg')+"\'>"+fp(rA,rA25)+" vs "+per+" 25A</div>"+
-    "<div class=\'kpi-sub2 "+(rA>=rB?'pos':'neg')+"\'>vs Budget : "+fec(rA,rB)+"</div></div>"+
-    "<div class=\'kpi-card red\'><div class=\'kpi-label\'>EBITDA YTD "+perFull+"</div>"+
-    "<div class=\'kpi-value\' style=\'color:#C00000\'>"+fv(eA)+"</div>"+
-    "<div class=\'kpi-sub "+(eA>=eB?'pos':'neg')+"\'>"+fec(eA,eB)+" vs budget</div>"+
-    "<div class=\'kpi-sub2 "+(eA>=eA25?'pos':'neg')+"\'>vs "+per+" 25A : "+fec(eA,eA25)+"</div></div>"+
-    "<div class=\'kpi-card warn\'><div class=\'kpi-label\'>Tr\u00e9sorerie \u2014 "+tresMon+"</div>"+
-    "<div class=\'kpi-value\'>"+(tresVal!==null?Math.round(Math.abs(tresVal)).toLocaleString('fr-FR')+' \u20ack':'\u2014')+"</div>"+
-    "<div class=\'kpi-sub neu\'>Dernier r\u00e9alis\u00e9</div></div>"+
-    "<div class=\'kpi-card blue\'><div class=\'kpi-label\'>Runway estim\u00e9</div>"+
-    "<div class=\'kpi-value\'>"+runwayStr+"</div>"+
-    "<div class=\'kpi-sub neu\'>Cash-out : <strong>"+cashoutLbl+"</strong></div></div>";
-})();
+// KPI dynamique
+(function(){
+  var n26=EBI_R.slice(12).filter(function(v){return v!==null;}).length;
+  var lastMon=n26>0?ALL_L[11+n26]:"";
+  var per=n26>0?"Jan–"+lastMon.split(" ")[0]:"Q1";
+  var perFull=per+" 2026";
+  function upd(id,txt){var e=document.getElementById(id);if(e)e.textContent=txt;}
+  upd("header-period","YTD "+perFull);
+  upd("kpi-section-title","KPIs PàL — YTD "+perFull);
+  upd("pl-section-title","P&L Comparatif YTD "+per+" · €k");
+  upd("chart-rev-yoy-title","Revenue YTD "+perFull+" — YoY");
+  upd("chart-ebi-yoy-title","EBITDA YTD "+perFull+" — YoY");
+  upd("chart-costs-title","Répartition coûts "+perFull);
+  upd("pl-h23","YTD 23A"); upd("pl-h24","YTD 24A"); upd("pl-h25","YTD 25A");
+  upd("pl-h26a","YTD "+perFull); upd("pl-h26b","YTD 26B"); upd("pl-hvs","vs YTD "+per+" 25A");
+  var rA=YTD.revenue[3],rA25=YTD.revenue[2],rB=YTD.revenue[4];
+  var eA=YTD.ebitda[3],eA25=YTD.ebitda[2],eB=YTD.ebitda[4];
+  function fv(v){if(v===null||v===undefined)return"—";var s=Math.abs(v).toLocaleString("fr-FR",{minimumFractionDigits:1,maximumFractionDigits:1});return(v<0?"("+s+")":s)+" €k";}
+  function fp(a,b){if(!b)return"—";var p=(a-b)/Math.abs(b)*100;return(p>=0?"+":"")+p.toFixed(1)+"%";}
+  function fec(a,b){if(!b)return"—";var e=a-b,p=e/Math.abs(b)*100;var s=Math.abs(e).toLocaleString("fr-FR",{minimumFractionDigits:1,maximumFractionDigits:1});return(e<0?"("+s+")":s)+" €k ("+(p>=0?"+":"")+p.toFixed(1)+"%)"; }
+  var lastRI=-1;for(var i=CASH.r.length-1;i>=0;i--){if(CASH.r[i]!==null){lastRI=i;break;}}
+  var tresVal=lastRI>=0?CASH.r[lastRI]:null;
+  var tresMon=lastRI>=0?CASH.L[lastRI]:"—";
+  var cashoutLbl="—",runwayM=null;
+  for(var j=lastRI+1;j<CASH.p.length;j++){if(CASH.p[j]!==null&&CASH.p[j]<=0){cashoutLbl=CASH.L[j];runwayM=j-lastRI;break;}}
+  var runwayStr=runwayM!==null?"~"+runwayM+" mois":"—";
+  var grid=document.getElementById("kpi-grid");
+  if(grid){
+    var h="";
+    h+="<div class=\"kpi-card\"><div class=\"kpi-label\">Revenue YTD "+perFull+"</div>";
+    h+="<div class=\"kpi-value\">"+fv(rA)+"</div>";
+    h+="<div class=\"kpi-sub "+(rA>=rA25?"pos":"neg")+"\">"+fp(rA,rA25)+" vs "+per+" 25A</div>";
+    h+="<div class=\"kpi-sub2 "+(rA>=rB?"pos":"neg")+"\">vs Budget : "+fec(rA,rB)+"</div></div>";
+    h+="<div class=\"kpi-card red\"><div class=\"kpi-label\">EBITDA YTD "+perFull+"</div>";
+    h+="<div class=\"kpi-value\" style=\"color:#C00000\">"+fv(eA)+"</div>";
+    h+="<div class=\"kpi-sub "+(eA>=eB?"pos":"neg")+"\">"+fec(eA,eB)+" vs budget</div>";
+    h+="<div class=\"kpi-sub2 "+(eA>=eA25?"pos":"neg")+"\">vs "+per+" 25A : "+fec(eA,eA25)+"</div></div>";
+    h+="<div class=\"kpi-card warn\"><div class=\"kpi-label\">Trésorerie — "+tresMon+"</div>";
+    h+="<div class=\"kpi-value\">"+(tresVal!==null?Math.round(Math.abs(tresVal)).toLocaleString("fr-FR")+" €k":"—")+"</div>";
+    h+="<div class=\"kpi-sub neu\">Dernier réalisé</div></div>";
+    h+="<div class=\"kpi-card blue\"><div class=\"kpi-label\">Runway estimé</div>";
+    h+="<div class=\"kpi-value\">"+runwayStr+"</div>";
+    h+="<div class=\"kpi-sub neu\">Cash-out : <strong>"+cashoutLbl+"</strong></div></div>";
+    grid.innerHTML=h;
+  }
+})();
 window.addEventListener('load',function(){if(typeof Chart==='undefined')return;
 Chart.defaults.font.family="Calibri,Arial,sans-serif";Chart.defaults.font.size=10;Chart.defaults.color="#555";
 new Chart(document.getElementById("c-yoy-rev"),{type:"bar",data:{labels:["Q1 23A","Q1 24A","Q1 25A","Q1 26A","Q1 26B"],datasets:[{data:YTD.revenue,backgroundColor:["#375623","#375623","#375623","#375623","rgba(55,86,35,.3)"],borderColor:["#375623","#375623","#375623","#375623","#375623"],borderWidth:[0,0,0,0,1.5],borderRadius:3}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}}}}});
@@ -215,6 +217,4 @@ const caMg=CA.find(function(r){return r[0]==="Management fees / MRR";});
 const upA=caUp?Math.round(caUp[4]/100)/10:0,mgA=caMg?Math.round(caMg[4]/100)/10:0;
 const upRF=caUp?Math.round((caUp[5]||0)/100)/10:0,mgRF=caMg?Math.round((caMg[5]||0)/100)/10:0;
 const upYA=caUp?Math.round(caUp[6]/100)/10:0,mgYA=caMg?Math.round(caMg[6]/100)/10:0;
-const upYB=caUp?Math.round(caUp[7]/100)/10:0,mgYB=caMg?Math.round(caMg[7]/100)/10:0;
-new Chart(document.getElementById("c-ca-mars"),{type:"bar",data:{labels:["Upfront","Mgmt / Récurrent"],datasets:[{label:"Apr-26",data:[upA,mgA],backgroundColor:["#2E75B6","#375623"],borderRadius:4,barPercentage:.4},{label:"Apr.26RF",data:[upRF,mgRF],backgroundColor:["rgba(46,117,182,.25)","rgba(55,86,35,.25)"],borderColor:["#2E75B6","#375623"],borderWidth:2,borderRadius:4,barPercentage:.4}]},options:{plugins:{legend:{position:"top",labels:{boxWidth:10,font:{size:9},padding:8}}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}}}}});
-new Chart(document.getElementById("c-ca-ytd"),{type:"bar",data:{labels:["Upfront","Mgmt / Récurrent"],datasets:[{label:"YTD 26A",data:[upYA,mgYA],backgroundColor:["#2E75B6","#375623"],borderRadius:4,barPercentage:.4},{label:"YTD 26B",data:[upYB,mgYB],backgroundColor:["rgba(46,117,182,.25)","rgba(55,86,35,.25)"],borderColor:["#2E75B6","#375623"],borderWidth:2,borderRadius:4,b
+const upYB=caUp?Math.round(caUp[7]/100)/10:0,mgYB=caMg?Math.round(caMg[
