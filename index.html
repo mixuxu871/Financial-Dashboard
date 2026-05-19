@@ -1,173 +1,173 @@
-<!DOCTYPE html><html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Financier Ramify</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
-<style>
-  :root{color-scheme:light}*{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:Calibri,Arial,sans-serif;background:#F0F4F3;color:#111827;font-size:12px}
-  .header{background:#0A3D30;color:white;padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
-  .header-title{font-size:15px;font-weight:700}.meta{font-size:10px;color:#94D9C5}
-  .page{padding:16px 24px}
-  .section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9CA3AF;margin:20px 0 8px;border-top:1px solid #E5E7EB;padding-top:14px}
-  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:4px}
-  .kpi-card{background:#fff;border-radius:4px;padding:12px 14px;border-top:3px solid #1F5C46;box-shadow:0 1px 2px rgba(0,0,0,.08)}
-  .kpi-card.warn{border-top-color:#F59E0B}.kpi-card.red{border-top-color:#C00000}.kpi-card.blue{border-top-color:#2E75B6}
-  .kpi-label{font-size:9px;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
-  .kpi-value{font-size:20px;font-weight:700;color:#111827;line-height:1}
-  .kpi-sub{font-size:9px;margin-top:4px}.kpi-sub2{font-size:9px;margin-top:2px}
-  .pos{color:#375623}.neg{color:#C00000}.neu{color:#6B7280}
-  .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
-  .charts-row.three{grid-template-columns:1fr 1fr 1fr}
-  .chart-card{background:#fff;border-radius:4px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.08);border:1px solid #E5E7EB}
-  .chart-title{font-size:10px;font-weight:700;color:#1F5C46;text-transform:uppercase;letter-spacing:.03em;margin-bottom:7px}
-  .legend-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px;font-size:9.5px;color:#555}
-  .legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:2px}
-  .tbl-wrap{overflow-x:auto}
-  table.excel{width:100%;border-collapse:collapse;font-family:Calibri,Arial,sans-serif;font-size:11px}
-  table.excel thead tr th{background:#1F5C46;color:#fff;font-weight:700;font-size:10px;padding:5px 8px;text-align:right;border:1px solid #145238;white-space:nowrap}
-  table.excel thead tr th:first-child{text-align:left}
-  table.excel thead tr th.th-hl{background:#BF8F00;border-color:#8A6600}
-  table.excel tbody td{padding:4px 8px;text-align:right;border:1px solid #D9D9D9;white-space:nowrap}
-  table.excel tbody td:first-child{text-align:left;white-space:normal;max-width:110px}
-  table.excel tbody tr:nth-child(even){background:#F2F2F2}
-  table.excel tbody tr.subtot td{font-weight:700;background:#E2EFDA;border-top:1.5px solid #375623;border-bottom:1.5px solid #375623}
-  table.excel tbody tr.tot td{font-weight:700;background:#C6EFCE;border-top:2px solid #375623;border-bottom:2px solid #375623;font-size:11.5px}
-  table.excel tbody tr.tot.red td{background:#FFCCCC;border-top:2px solid #C00000;border-bottom:2px solid #C00000}
-  .col-hl{background:#FFF2CC!important}.vpos{color:#375623;font-weight:700}.vneg{color:#C00000;font-weight:700}
-  table.ca{width:100%;border-collapse:collapse;table-layout:fixed;font-family:Calibri,Arial,sans-serif;font-size:9.5px}
-  table.ca thead th{background:#1F5C46;color:#fff;font-weight:700;font-size:7.5px;padding:3px;text-align:right;border:1px solid #145238;white-space:nowrap;overflow:hidden}
-  table.ca thead tr:first-child th:first-child{text-align:left}
-  table.ca thead th.th-mar{background:#2E75B6;border-color:#1A4F8A}
-  table.ca thead th.th-hl{background:#BF8F00;border-color:#8A6600;color:#fff}
-  table.ca thead th.th-ytd{background:#375623;border-color:#1F3A14}
-  table.ca tbody td{padding:2px 4px;text-align:right;border:1px solid #D9D9D9;font-size:8.5px;white-space:nowrap;overflow:hidden}
-  table.ca tbody td:first-child{text-align:left;white-space:normal;overflow:visible}
-  table.ca tbody td:not(:first-child){text-align:right}
-  table.ca tbody tr:nth-child(even){background:#F2F2F2}
-  table.ca tr.ca-sub td{font-weight:700;background:#E2EFDA;border-top:1.5px solid #375623;border-bottom:1.5px solid #375623}
-  table.ca tr.ca-tot td{font-weight:700;background:#C6EFCE;border-top:2px solid #375623;border-bottom:2px solid #375623}
-  table.ca tr.ca-grand td{font-weight:700;background:#375623;color:#fff;border-top:2px solid #1F3A14;border-bottom:2px solid #1F3A14}
-  table.ca tr.ca-kpi-hdr td{background:#1F5C46;color:#fff;font-weight:700;font-size:8px;letter-spacing:.05em;padding:4px}
-  table.ca tr.ca-kpi td{background:#EBF3E8}
-  table.ca tr.ca-kpi-hi td{background:#FFCCCC;font-weight:700;border-top:1.5px solid #C00000;border-bottom:1.5px solid #C00000;color:#C00000}
-  table.ca td.ci1{padding-left:12px;color:#4B5563}
-  .ytd-sep{border-left:2px solid #375623!important}
-  .avr-sep{border-left:2px dashed #BF8F00!important}
-  .cv-pos{color:#375623;font-weight:700}.cv-neg{color:#C00000;font-weight:700}.ca-dash{color:#9CA3AF}
-  @media print{body{background:#fff}.kpi-card,.chart-card{box-shadow:none;page-break-inside:avoid}@page{margin:10mm;size:A4 landscape}}
-</style>
-</head>
-<body>
-<div class="header">
-  <div><div class="header-title">RAMIFY — Dashboard Financier &amp; CA</div><div class="meta">Sources : Auto-genere le 19/05/2026 17:09</div></div>
-  <div style="text-align:right"><div class="meta">Période arrêtée</div><div id="header-period" style="color:#fff;font-weight:700;font-size:13px">Q1 2026 — Mars 2026</div></div>
-</div>
-<div class="page">
-<div class="section-title" id="kpi-section-title" style="border-top:none;padding-top:0;margin-top:0">KPIs P&amp;L — YTD</div>
-<div class="kpi-grid" id="kpi-grid"></div>
-<div class="section-title" id="pl-section-title">P&L Comparatif YTD · €k</div>
-<div class="chart-card" style="margin-bottom:14px;padding:0"><div class="tbl-wrap"><table class="excel"><thead><tr><th>Ligne</th><th id="pl-h23">YTD 23A</th><th id="pl-h24">YTD 24A</th><th id="pl-h25">YTD 25A</th><th id="pl-h26a">YTD 26A</th><th id="pl-h26b">YTD 26B</th><th class="th-hl" id="pl-hec">Écart €k</th><th class="th-hl">%</th><th id="pl-hvs">vs YTD 25A</th></tr></thead><tbody id="pl-tbody"></tbody></table></div></div>
-<div class="section-title">P&L — Évolution et Trésorerie</div>
-<div class="charts-row three">
-  <div class="chart-card"><div class="chart-title" id="chart-rev-yoy-title">Revenue YTD — YoY</div><canvas id="c-yoy-rev" height="200"></canvas></div>
-  <div class="chart-card"><div class="chart-title" id="chart-ebi-yoy-title">EBITDA YTD — YoY</div><canvas id="c-yoy-ebitda" height="200"></canvas></div>
-  <div class="chart-card"><div class="chart-title" id="chart-costs-title">Répartition coûts 26A</div><canvas id="c-costs-pie" height="200"></canvas></div>
-</div>
-<div class="charts-row">
-  <div class="chart-card">
-    <div class="chart-title">Revenue mensuel — Upfront vs Mgmt + AuM (€k / M€)</div>
-    <div class="legend-row"><span><span class="legend-dot" style="background:#2E75B6"></span>Upfront réalisé</span><span><span class="legend-dot" style="background:rgba(46,117,182,.4)"></span>Upfront 26E</span><span><span class="legend-dot" style="background:#375623"></span>Mgmt réalisé</span><span><span class="legend-dot" style="background:rgba(55,86,35,.4)"></span>Mgmt 26E</span><span><span class="legend-dot" style="background:#BF8F00"></span>AuM M€</span></div>
-    <canvas id="c-rev-monthly" height="210"></canvas>
-  </div>
-  <div class="chart-card">
-    <div class="chart-title">EBITDA mensuel (€k)</div>
-    <div class="legend-row"><span><span class="legend-dot" style="background:#C00000"></span>Réalisé Jan 25–Mar 26</span><span>- - - BP Avr–Déc 26</span></div>
-    <canvas id="c-ebitda-monthly" height="210"></canvas>
-  </div>
-</div>
-<div class="charts-row">
-  <div class="chart-card">
-    <div class="chart-title">Trajectoire trésorerie (€k)</div>
-    <div class="legend-row"><span><span class="legend-dot" style="background:#1F5C46"></span>Réalisé</span><span><span class="legend-dot" style="background:#F59E0B"></span>Projection atterrissage FY26E</span></div>
-    <canvas id="c-cash" height="195"></canvas>
-  </div>
-  <div class="chart-card">
-    <div class="chart-title">Détail SG&A — Q1 comparatif (€k)</div>
-    <canvas id="c-sga" height="195"></canvas>
-  </div>
-</div>
-<div class="section-title">Chiffre d'Affaires — Analyse ARR · Jan–Avr 2026 (en €)</div>
-<div class="chart-card" style="padding:0;overflow:hidden;margin-bottom:14px">
-  <table class="ca">
-    <colgroup><col style="width:38px"><col style="width:22px"><col style="width:22px"><col style="width:22px"><col style="width:22px"><col style="width:22px"><col style="width:22px"><col style="width:16px"><col style="width:25px"><col style="width:25px"><col style="width:22px"><col style="width:16px"></colgroup>
-    <thead>
-      <tr><th style="text-align:left" rowspan="2">En €</th><th colspan="7" class="th-mar" style="text-align:center;border-bottom:1px solid #1A4F8A">Mensuel Jan–Avr 2026</th><th colspan="4" class="th-ytd ytd-sep" style="text-align:center;border-bottom:1px solid #1F3A14">YTD Jan–Avr 2026</th></tr>
-      <tr><th class="th-mar">Jan A</th><th class="th-mar">Fév A</th><th class="th-mar">Mar A</th><th class="th-mar">Apr-26</th><th class="th-mar avr-sep">Apr.26RF</th><th class="th-hl">Écart</th><th class="th-hl">%</th><th class="th-ytd ytd-sep">26A</th><th class="th-ytd">26B</th><th class="th-hl">Écart</th><th class="th-hl">%</th></tr>
-    </thead>
-    <tbody id="ca-tbody"></tbody>
-  </table>
-</div>
-<div class="charts-row">
-  <div class="chart-card"><div class="chart-title">Apr-26 vs Apr.26RF — Upfront &amp; Mgmt (€k)</div><canvas id="c-ca-mars" height="200"></canvas></div>
-  <div class="chart-card"><div class="chart-title">YTD Jan–Avr 2026 — Upfront &amp; Mgmt vs Budget (€k)</div><canvas id="c-ca-ytd" height="200"></canvas></div>
-</div>
-</div>
-<script>
-const GRD={color:"#E5E7EB"};
-const YTD={revenue:[37.4, 225.0, 478.3, 880.5, 1178.6],staffCosts:[-314.4, -399.8, -767.7, -1248.3, 0.0],sga:[-398.6, -351.6, -822.0, -1323.5, -1318.2],fees:[-174.5, -61.3, -170.2, -219.2, -293.5],ads:[-137.1, -182.6, -425.5, -709.5, -680.3],rentals:[-70.8, -98.4, -193.6, -293.4, -253.2],otherSga:[0, 0, 0, 0, 0],caprd:[0.0, 0.0, 137.2, 166.4, 166.7],ebitda:[-700.4, -566.5, -1108.2, -1674.3, -1411.1],netResult:[-704.7, -642.8, -1167.4, -1740.4, -1515.4]};
-const ALL_L=["Jan 25","Fév 25","Mar 25","Avr 25","Mai 25","Jun 25","Jul 25","Aoû 25","Sep 25","Oct 25","Nov 25","Déc 25","Jan 26","Fév 26","Mar 26","Avr 26","Mai 26","Jun 26","Jul 26","Aoû 26","Sep 26","Oct 26","Nov 26","Déc 26"];
-const REV_B=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 283.28, 300.53, 318.58, 337.4, 357.01, 377.41, 398.59, 435.37];
-const EBI_R=[-180.13, -238.62, -330.4, -359.03, -251.96, -401.72, -317.4, -264.96, -387.1, -324.21, -337.52, -154.9, -429.23, -435.07, -392.84, -416.79, null, null, null, null, null, null, null, null];
-const EBI_B=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, -416.79, -371.93, -368.98, -326.88, -275.61, -364.22, -319.94, -364.51, -182.72];
-const CASH={L:["Jan 25", "F\u00e9v 25", "Mar 25", "Avr 25", "Mai 25", "Jui 25", "Jui 25", "Ao\u00fb 25", "Sep 25", "Oct 25", "Nov 25", "D\u00e9c 25", "Jan 26", "F\u00e9v 26", "Mar 26", "Avr 26", "Mai 26", "Jui 26", "Jui 26", "Ao\u00fb 26", "Sep 26", "Oct 26", "Nov 26", "D\u00e9c 26", "Jan 27", "F\u00e9v 27", "Mar 27", "Avr 27"],r:[7639.7, 7340.0, 7068.8, 6566.3, 6160.7, 5867.1, 5393.3, 4957.3, 4591.2, 4191.6, 3613.7, 5618.7, 5195.4, 4762.7, 4457.2, null, null, null, null, null, null, null, null, null, null, null, null, null],p:[null, null, null, null, null, null, null, null, null, null, null, null, null, null, 4457.2, 3677.0, 3202.2, 3249.6, 2762.0, 2477.4, 2067.5, 1824.4, 1415.0, 997.7, 609.7, 379.9, 176.9, -563.0]};
-const UP_M=[44.3, 32.5, 37.8, 37.0, 28.1, 25.3, 15.2, 32.5, 30.2, 44.9, 53.5, 52.9, 52.9, 34.5, 28.8, 33.9, null, null, null, null, null, null, null, null];
-const MG_M=[69.7, 70.4, 71.5, 74.8, 75.3, 76.1, 99.9, 101.2, 102.5, 125.5, 127.6, 130.1, 150.9, 154.4, 156.6, 184.2, null, null, null, null, null, null, null, null];
-const PCT_UP=[0.389,0.316,0.346,0.331,0.272,0.250,0.132,0.243,0.228,0.260,0.291,0.284,0.248,0.182,0.146,0.18,0.17,0.16,0.14,0.20,0.22,0.22,0.22,0.23];
-const UP_F=[...UP_M],MG_F=[...MG_M];
-REV_B.forEach((r,i)=>{if(r!==null&&UP_M[i]===null){UP_F[i]=Math.round(PCT_UP[i]*r*10)/10;MG_F[i]=Math.round((1-PCT_UP[i])*r*10)/10;}});
-const UA=UP_F.map((v,i)=>i<16?v:null),UE=UP_F.map((v,i)=>i>=16?v:null);
-const MA=MG_F.map((v,i)=>i<15?v:null),ME=MG_F.map((v,i)=>i>=15?v:null);
-const AUM=[];
-const CA=[["Entry SCPI", 10056, 18132, 15804, 4279, 14578, 48270, 141572, "row", 1], ["Entry Club-Deal Art", 13200, 2400, 10600, 7845, 14250, 34045, 63397, "row", 1], ["Entry Club-Deal Immo", 26800, 9000, 0, 17803, 18087, 53603, 115702, "row", 1], ["Entry PE", 375, 0, 0, 2606, 5428, 2981, 18583, "row", 1], ["Entry Crypto", 1150, 1150, 1150, 593, 1196, 4044, 4712, "row", 1], ["Entry PS", 942, 942, 942, 0, 3226, 2827, 8671, "row", 1], ["Entry Invest", 354, 354, 354, 357, 1106, 1419, 3935, "row", 1], ["Autres", 0, 2500, 0, 450, 0, 2950, 0, "row", 1], ["Upfront fees", 52877, 34478, 28850, 33934, 57873, 150139, 356571, "sub"], ["Management Invest", 100832, 103185, 103961, 129647, 127050, 437625, 518527, "row", 1], ["Management PE", 44392, 45442, 46907, 48706, 51002, 185446, 212974, "row", 1], ["Management Cash", 3187, 3197, 3179, 3087, 3692, 12651, 18349, "row", 1], ["Management SCPI", 2380, 2384, 2384, 2653, 1876, 9801, 7678, "row", 1], ["Management PS", 147, 147, 147, 147, 0, 588, 0, "row", 1], ["Management fees / MRR", 150939, 154355, 156577, 184240, 183621, 646111, 757528, "sub"], ["Revenue Ramify", 203815, 188833, 185427, 218174, 241495, 796250, 1114099, "tot"], ["Management X-Fund", 14759, 15158, 15724, 16713, 16499, 62354, 64547, "row", 1], ["Revenue Valhyr", 14759, 15158, 15724, 16713, 16499, 62354, 64547, "sub"], ["Revenue", 218574, 203991, 201151, 234887, 257994, 858603, 1178646, "grand"], ["KPI Ramify", null, null, null, null, null, null, null, "kpi-hdr"], ["Rec. ARR (Ek)", 1811, 1852, 1879, 2211, 2203, 1938, 2273, "kpi", 1], ["ARR RMF (Ek)", 2446, 2266, 2225, 2618, 2897, 2389, 3342, "kpi", 1]];
-function fN(v){if(v===null||v===undefined)return"—";if(typeof v==="string")return v;const s=Math.round(Math.abs(v)).toLocaleString("fr-FR");return v<0?"("+s+")":s;}
-function fP(v){if(v===null||v===undefined)return"—";const s=Math.round(Math.abs(v*100));return v<0?"("+s+")%":s+"%";}
-function fK(v,d=1){if(v===null)return"—";const s=Math.abs(v).toLocaleString("fr-FR",{minimumFractionDigits:d,maximumFractionDigits:d});return v<0?"("+s+")":s;}
-function fPl(v){if(v===null)return"—";return(v>=0?"+":"")+(v*100).toFixed(1)+"%";}
-function eC(v){return typeof v==="number"?(v>=0?"vpos":"vneg"):"";}
-const PLD=[{l:"Revenue",k:"revenue",t:"tot"},{l:"Staff Costs",k:"staffCosts",t:"subtot",i:1},{l:"SG&A",k:"sga",t:"subtot",i:1},{l:"dont Fees",k:"fees",i:2},{l:"dont Ads & Marketing",k:"ads",i:2},{l:"dont Rentals",k:"rentals",i:2},{l:"dont Autres",k:"otherSga",i:2},{l:"Capitalized R&D",k:"caprd",i:1},{l:"EBITDA",k:"ebitda",t:"tot"},{l:"Net Result",k:"netResult",t:"tot",r:true}];
-const ptb=document.getElementById("pl-tbody");
-PLD.forEach(ln=>{const d=YTD[ln.k],a=d[3],b=d[4],a25=d[2];const ec=b?a-b:null,ecP=b?ec/Math.abs(b):null,y2y=a25?(a-a25)/Math.abs(a25):null;const tr=document.createElement("tr");if(ln.t==="tot"){tr.classList.add("tot");if(ln.r)tr.classList.add("red");}if(ln.t==="subtot")tr.classList.add("subtot");const ps=ln.i===2?"padding-left:20px;color:#6B7280;font-size:10.5px":ln.i===1?"padding-left:12px;color:#4B5563":"";tr.innerHTML="<td style='"+ps+"'>"+ln.l+"</td><td>"+fK(d[0])+"</td><td>"+fK(d[1])+"</td><td>"+fK(d[2])+"</td><td><strong>"+fK(d[3])+"</strong></td><td style='color:#6B7280'>"+fK(d[4])+"</td><td class='col-hl "+eC(ec)+"'>"+fK(ec)+"</td><td class='col-hl "+eC(ecP)+"'>"+fPl(ecP)+"</td><td class='"+eC(y2y)+"'>"+fPl(y2y)+"</td>";ptb.appendChild(tr);});
-const ctb=document.getElementById("ca-tbody");
-CA.forEach(function(row){
-  const label=row[0],janA=row[1],febA=row[2],marA=row[3],aprA=row[4],aprRF=row[5],ytdA=row[6],ytdB=row[7],type=row[8],ind=row[9];
-  const tr=document.createElement("tr");
-  if(type==="kpi-hdr"){tr.classList.add("ca-kpi-hdr");tr.innerHTML="<td colspan='12' style='background:#1F5C46;color:#fff;font-weight:700;font-size:8px;padding:4px 6px'>KPI RAMIFY</td>";ctb.appendChild(tr);return;}
-  if(type==="sub")tr.classList.add("ca-sub");if(type==="tot")tr.classList.add("ca-tot");if(type==="grand")tr.classList.add("ca-grand");if(type==="kpi")tr.classList.add("ca-kpi");if(type==="kpi-hi")tr.classList.add("ca-kpi-hi");
-  const dk=(type==="grand"||type==="tot");const bc=dk?"#fff":"#6B7280";const ic=ind===1?"ci1":"";
-  let aEN="—",aEH="—";
-  if(typeof aprA==="number"&&typeof aprRF==="number"&&aprRF!==0){const e=aprA-aprRF,p=e/Math.abs(aprRF);aEN="<span class='"+(e>=0?"cv-pos":"cv-neg")+"'>"+fN(e)+"</span>";aEH="<span class='"+(p>=0?"cv-pos":"cv-neg")+"'>"+fP(p)+"</span>";}
-  let yEN="—",yEP="—";
-  if(typeof ytdA==="number"&&typeof ytdB==="number"&&ytdB!==0){const e=ytdA-ytdB,p=e/Math.abs(ytdB);yEN="<span class='"+(e>=0?"cv-pos":"cv-neg")+"'>"+fN(e)+"</span>";yEP="<span class='"+(p>=0?"cv-pos":"cv-neg")+"'>"+fP(p)+"</span>";}
-  const rfColor=type==="grand"?"#fff":"#333";
-  const aRFH=aprRF!=null&&aprRF!==0?"<span style='color:"+rfColor+"'>"+fN(aprRF)+"</span>":"—";
-  const ybH=ytdB!=null&&ytdB!==0?"<span style='color:"+bc+"'>"+fN(ytdB)+"</span>":"—";
-  tr.innerHTML="<td class='"+ic+"'>"+label+"</td><td>"+fN(janA)+"</td><td>"+fN(febA)+"</td><td>"+fN(marA)+"</td><td>"+fN(aprA)+"</td><td class='avr-sep'>"+aRFH+"</td><td style='background:#FFF2CC'>"+aEN+"</td><td style='background:#FFF2CC'>"+aEH+"</td><td class='ytd-sep'><strong>"+fN(ytdA)+"</strong></td><td>"+ybH+"</td><td style='background:#FFF2CC'>"+yEN+"</td><td style='background:#FFF2CC'>"+yEP+"</td>";
-  ctb.appendChild(tr);
-});
-
-window.addEventListener('load',function(){if(typeof Chart==='undefined')return;
-Chart.defaults.font.family="Calibri,Arial,sans-serif";Chart.defaults.font.size=10;Chart.defaults.color="#555";
-new Chart(document.getElementById("c-yoy-rev"),{type:"bar",data:{labels:["Q1 23A","Q1 24A","Q1 25A","Q1 26A","Q1 26B"],datasets:[{data:YTD.revenue,backgroundColor:["#375623","#375623","#375623","#375623","rgba(55,86,35,.3)"],borderColor:["#375623","#375623","#375623","#375623","#375623"],borderWidth:[0,0,0,0,1.5],borderRadius:3}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}}}}});
-new Chart(document.getElementById("c-yoy-ebitda"),{type:"bar",data:{labels:["Q1 23A","Q1 24A","Q1 25A","Q1 26A","Q1 26B"],datasets:[{data:YTD.ebitda,backgroundColor:["#C00000","#C00000","#C00000","#C00000","rgba(192,0,0,.3)"],borderColor:["#C00000","#C00000","#C00000","#C00000","#C00000"],borderWidth:[0,0,0,0,1.5],borderRadius:3}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}}}}});
-new Chart(document.getElementById("c-costs-pie"),{type:"doughnut",data:{labels:["Staff Costs","Ads & Mktg","Fees","Rentals","Autres"],datasets:[{data:[1016.6,464.9,197.5,213,79.7],backgroundColor:["#C00000","#F59E0B","#2E75B6","#375623","#9CA3AF"],borderWidth:2,borderColor:"#fff"}]},options:{cutout:"58%",plugins:{legend:{position:"right",labels:{boxWidth:9,font:{size:9},padding:5}}}}});
-new Chart(document.getElementById("c-rev-monthly"),{type:"bar",data:{labels:ALL_L,datasets:[{data:UA,backgroundColor:"#2E75B6",stack:"s",yAxisID:"y"},{data:UE,backgroundColor:"rgba(46,117,182,.4)",stack:"s",borderColor:"#2E75B6",borderWidth:1,yAxisID:"y"},{data:MA,backgroundColor:"#375623",stack:"s",yAxisID:"y"},{data:ME,backgroundColor:"rgba(55,86,35,.4)",stack:"s",borderColor:"#375623",borderWidth:1,yAxisID:"y"},{data:AUM,type:"line",borderColor:"#BF8F00",tension:0,pointRadius:3,fill:false,yAxisID:"y2",order:-1}]},options:{plugins:{legend:{display:false}},scales:{x:{stacked:true,ticks:{maxRotation:45,font:{size:8}}},y:{stacked:true,grid:GRD,ticks:{callback:function(v){return v+"k";}},position:"left"},y2:{grid:{display:false},ticks:{callback:function(v){return v+" M€";},color:"#BF8F00"},position:"right",min:0,max:700}}}});
-new Chart(document.getElementById("c-ebitda-monthly"),{type:"line",data:{labels:ALL_L,datasets:[{data:EBI_R,borderColor:"#C00000",tension:0,pointRadius:3,fill:false},{data:EBI_B,borderColor:"#C00000",borderDash:[5,3],tension:0,pointRadius:2,fill:false}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}},x:{ticks:{maxRotation:45,font:{size:8}}}}}});
-new Chart(document.getElementById("c-cash"),{type:"line",data:{labels:CASH.L,datasets:[{data:CASH.r,borderColor:"#1F5C46",backgroundColor:"rgba(31,92,70,.08)",tension:0,fill:true,pointRadius:2},{data:CASH.p,borderColor:"#F59E0B",borderDash:[5,3],tension:0,fill:false,pointRadius:2}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}},x:{ticks:{maxRotation:60,font:{size:8}}}}}});
-new Chart(document.getElementById("c-sga"),{type:"bar",data:{labels:["Fees","Ads & Mktg","Rentals","Travel","Training"],datasets:[{label:"Q1 23A",data:[93.5,98.3,51.8,1.8,0],backgroundColor:"#C6EFCE",borderRadius:2},{label:"Q1 24A",data:[44.6,147.7,72.5,1.3,1.2],backgroundColor:"#70AD47",borderRadius:2},{label:"Q1 25A",data:[91.9,258.2,140.2,5.2,6],backgroundColor:"#F59E0B",borderRadius:2},{label:"Q1 26A",data:[197.5,464.9,213,36,20],backgroundColor:"#C00000",borderRadius:2},{label:"Q1 26B",data:[211.6,496.8,190,30.3,3.9],backgroundColor:"rgba(46,117,182,.4)",borderColor:"#2E75B6",borderWidth:1.5,borderRadius:2}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}}}}});
-const caUp=CA.find(function(r){return r[0]==="Upfront fees";});
-const caMg=CA.find(function(r){return r[0]==="Management fees / MRR";});
+<!DOCTYPE html><html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Financier Ramify</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<style>
+  :root{color-scheme:light}*{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Calibri,Arial,sans-serif;background:#F0F4F3;color:#111827;font-size:12px}
+  .header{background:#0A3D30;color:white;padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+  .header-title{font-size:15px;font-weight:700}.meta{font-size:10px;color:#94D9C5}
+  .page{padding:16px 24px}
+  .section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9CA3AF;margin:20px 0 8px;border-top:1px solid #E5E7EB;padding-top:14px}
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:4px}
+  .kpi-card{background:#fff;border-radius:4px;padding:12px 14px;border-top:3px solid #1F5C46;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+  .kpi-card.warn{border-top-color:#F59E0B}.kpi-card.red{border-top-color:#C00000}.kpi-card.blue{border-top-color:#2E75B6}
+  .kpi-label{font-size:9px;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+  .kpi-value{font-size:20px;font-weight:700;color:#111827;line-height:1}
+  .kpi-sub{font-size:9px;margin-top:4px}.kpi-sub2{font-size:9px;margin-top:2px}
+  .pos{color:#375623}.neg{color:#C00000}.neu{color:#6B7280}
+  .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  .charts-row.three{grid-template-columns:1fr 1fr 1fr}
+  .chart-card{background:#fff;border-radius:4px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,.08);border:1px solid #E5E7EB}
+  .chart-title{font-size:10px;font-weight:700;color:#1F5C46;text-transform:uppercase;letter-spacing:.03em;margin-bottom:7px}
+  .legend-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px;font-size:9.5px;color:#555}
+  .legend-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:2px}
+  .tbl-wrap{overflow-x:auto}
+  table.excel{width:100%;border-collapse:collapse;font-family:Calibri,Arial,sans-serif;font-size:11px}
+  table.excel thead tr th{background:#1F5C46;color:#fff;font-weight:700;font-size:10px;padding:5px 8px;text-align:right;border:1px solid #145238;white-space:nowrap}
+  table.excel thead tr th:first-child{text-align:left}
+  table.excel thead tr th.th-hl{background:#BF8F00;border-color:#8A6600}
+  table.excel tbody td{padding:4px 8px;text-align:right;border:1px solid #D9D9D9;white-space:nowrap}
+  table.excel tbody td:first-child{text-align:left;white-space:normal;max-width:110px}
+  table.excel tbody tr:nth-child(even){background:#F2F2F2}
+  table.excel tbody tr.subtot td{font-weight:700;background:#E2EFDA;border-top:1.5px solid #375623;border-bottom:1.5px solid #375623}
+  table.excel tbody tr.tot td{font-weight:700;background:#C6EFCE;border-top:2px solid #375623;border-bottom:2px solid #375623;font-size:11.5px}
+  table.excel tbody tr.tot.red td{background:#FFCCCC;border-top:2px solid #C00000;border-bottom:2px solid #C00000}
+  .col-hl{background:#FFF2CC!important}.vpos{color:#375623;font-weight:700}.vneg{color:#C00000;font-weight:700}
+  table.ca{width:100%;border-collapse:collapse;table-layout:fixed;font-family:Calibri,Arial,sans-serif;font-size:9.5px}
+  table.ca thead th{background:#1F5C46;color:#fff;font-weight:700;font-size:7.5px;padding:3px;text-align:right;border:1px solid #145238;white-space:nowrap;overflow:hidden}
+  table.ca thead tr:first-child th:first-child{text-align:left}
+  table.ca thead th.th-mar{background:#2E75B6;border-color:#1A4F8A}
+  table.ca thead th.th-hl{background:#BF8F00;border-color:#8A6600;color:#fff}
+  table.ca thead th.th-ytd{background:#375623;border-color:#1F3A14}
+  table.ca tbody td{padding:2px 4px;text-align:right;border:1px solid #D9D9D9;font-size:8.5px;white-space:nowrap;overflow:hidden}
+  table.ca tbody td:first-child{text-align:left;white-space:normal;overflow:visible}
+  table.ca tbody td:not(:first-child){text-align:right}
+  table.ca tbody tr:nth-child(even){background:#F2F2F2}
+  table.ca tr.ca-sub td{font-weight:700;background:#E2EFDA;border-top:1.5px solid #375623;border-bottom:1.5px solid #375623}
+  table.ca tr.ca-tot td{font-weight:700;background:#C6EFCE;border-top:2px solid #375623;border-bottom:2px solid #375623}
+  table.ca tr.ca-grand td{font-weight:700;background:#375623;color:#fff;border-top:2px solid #1F3A14;border-bottom:2px solid #1F3A14}
+  table.ca tr.ca-kpi-hdr td{background:#1F5C46;color:#fff;font-weight:700;font-size:8px;letter-spacing:.05em;padding:4px}
+  table.ca tr.ca-kpi td{background:#EBF3E8}
+  table.ca tr.ca-kpi-hi td{background:#FFCCCC;font-weight:700;border-top:1.5px solid #C00000;border-bottom:1.5px solid #C00000;color:#C00000}
+  table.ca td.ci1{padding-left:12px;color:#4B5563}
+  .ytd-sep{border-left:2px solid #375623!important}
+  .avr-sep{border-left:2px dashed #BF8F00!important}
+  .cv-pos{color:#375623;font-weight:700}.cv-neg{color:#C00000;font-weight:700}.ca-dash{color:#9CA3AF}
+  @media print{body{background:#fff}.kpi-card,.chart-card{box-shadow:none;page-break-inside:avoid}@page{margin:10mm;size:A4 landscape}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div><div class="header-title">RAMIFY — Dashboard Financier &amp; CA</div><div class="meta">Sources : Auto-genere le 19/05/2026 17:09</div></div>
+  <div style="text-align:right"><div class="meta">Période arrêtée</div><div id="header-period" style="color:#fff;font-weight:700;font-size:13px">Q1 2026 — Mars 2026</div></div>
+</div>
+<div class="page">
+<div class="section-title" id="kpi-section-title" style="border-top:none;padding-top:0;margin-top:0">KPIs P&amp;L — YTD</div>
+<div class="kpi-grid" id="kpi-grid"></div>
+<div class="section-title" id="pl-section-title">P&L Comparatif YTD · €k</div>
+<div class="chart-card" style="margin-bottom:14px;padding:0"><div class="tbl-wrap"><table class="excel"><thead><tr><th>Ligne</th><th id="pl-h23">YTD 23A</th><th id="pl-h24">YTD 24A</th><th id="pl-h25">YTD 25A</th><th id="pl-h26a">YTD 26A</th><th id="pl-h26b">YTD 26B</th><th class="th-hl" id="pl-hec">Écart €k</th><th class="th-hl">%</th><th id="pl-hvs">vs YTD 25A</th></tr></thead><tbody id="pl-tbody"></tbody></table></div></div>
+<div class="section-title">P&L — Évolution et Trésorerie</div>
+<div class="charts-row three">
+  <div class="chart-card"><div class="chart-title" id="chart-rev-yoy-title">Revenue YTD — YoY</div><canvas id="c-yoy-rev" height="200"></canvas></div>
+  <div class="chart-card"><div class="chart-title" id="chart-ebi-yoy-title">EBITDA YTD — YoY</div><canvas id="c-yoy-ebitda" height="200"></canvas></div>
+  <div class="chart-card"><div class="chart-title" id="chart-costs-title">Répartition coûts 26A</div><canvas id="c-costs-pie" height="200"></canvas></div>
+</div>
+<div class="charts-row">
+  <div class="chart-card">
+    <div class="chart-title">Revenue mensuel — Upfront vs Mgmt + AuM (€k / M€)</div>
+    <div class="legend-row"><span><span class="legend-dot" style="background:#2E75B6"></span>Upfront réalisé</span><span><span class="legend-dot" style="background:rgba(46,117,182,.4)"></span>Upfront 26E</span><span><span class="legend-dot" style="background:#375623"></span>Mgmt réalisé</span><span><span class="legend-dot" style="background:rgba(55,86,35,.4)"></span>Mgmt 26E</span><span><span class="legend-dot" style="background:#BF8F00"></span>AuM M€</span></div>
+    <canvas id="c-rev-monthly" height="210"></canvas>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">EBITDA mensuel (€k)</div>
+    <div class="legend-row"><span><span class="legend-dot" style="background:#C00000"></span>Réalisé Jan 25–Mar 26</span><span>- - - BP Avr–Déc 26</span></div>
+    <canvas id="c-ebitda-monthly" height="210"></canvas>
+  </div>
+</div>
+<div class="charts-row">
+  <div class="chart-card">
+    <div class="chart-title">Trajectoire trésorerie (€k)</div>
+    <div class="legend-row"><span><span class="legend-dot" style="background:#1F5C46"></span>Réalisé</span><span><span class="legend-dot" style="background:#F59E0B"></span>Projection atterrissage FY26E</span></div>
+    <canvas id="c-cash" height="195"></canvas>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Détail SG&A — Q1 comparatif (€k)</div>
+    <canvas id="c-sga" height="195"></canvas>
+  </div>
+</div>
+<div class="section-title">Chiffre d'Affaires — Analyse ARR · Jan–Avr 2026 (en €)</div>
+<div class="chart-card" style="padding:0;overflow:hidden;margin-bottom:14px">
+  <table class="ca">
+    <colgroup><col style="width:38px"><col style="width:22px"><col style="width:22px"><col style="width:22px"><col style="width:22px"><col style="width:22px"><col style="width:22px"><col style="width:16px"><col style="width:25px"><col style="width:25px"><col style="width:22px"><col style="width:16px"></colgroup>
+    <thead>
+      <tr><th style="text-align:left" rowspan="2">En €</th><th colspan="7" class="th-mar" style="text-align:center;border-bottom:1px solid #1A4F8A">Mensuel Jan–Avr 2026</th><th colspan="4" class="th-ytd ytd-sep" style="text-align:center;border-bottom:1px solid #1F3A14">YTD Jan–Avr 2026</th></tr>
+      <tr><th class="th-mar">Jan A</th><th class="th-mar">Fév A</th><th class="th-mar">Mar A</th><th class="th-mar">Apr-26</th><th class="th-mar avr-sep">Apr.26RF</th><th class="th-hl">Écart</th><th class="th-hl">%</th><th class="th-ytd ytd-sep">26A</th><th class="th-ytd">26B</th><th class="th-hl">Écart</th><th class="th-hl">%</th></tr>
+    </thead>
+    <tbody id="ca-tbody"></tbody>
+  </table>
+</div>
+<div class="charts-row">
+  <div class="chart-card"><div class="chart-title">Apr-26 vs Apr.26RF — Upfront &amp; Mgmt (€k)</div><canvas id="c-ca-mars" height="200"></canvas></div>
+  <div class="chart-card"><div class="chart-title">YTD Jan–Avr 2026 — Upfront &amp; Mgmt vs Budget (€k)</div><canvas id="c-ca-ytd" height="200"></canvas></div>
+</div>
+</div>
+<script>
+const GRD={color:"#E5E7EB"};
+const YTD={revenue:[37.4, 225.0, 478.3, 880.5, 1178.6],staffCosts:[-314.4, -399.8, -767.7, -1248.3, 0.0],sga:[-398.6, -351.6, -822.0, -1323.5, -1318.2],fees:[-174.5, -61.3, -170.2, -219.2, -293.5],ads:[-137.1, -182.6, -425.5, -709.5, -680.3],rentals:[-70.8, -98.4, -193.6, -293.4, -253.2],otherSga:[0, 0, 0, 0, 0],caprd:[0.0, 0.0, 137.2, 166.4, 166.7],ebitda:[-700.4, -566.5, -1108.2, -1674.3, -1411.1],netResult:[-704.7, -642.8, -1167.4, -1740.4, -1515.4]};
+const ALL_L=["Jan 25","Fév 25","Mar 25","Avr 25","Mai 25","Jun 25","Jul 25","Aoû 25","Sep 25","Oct 25","Nov 25","Déc 25","Jan 26","Fév 26","Mar 26","Avr 26","Mai 26","Jun 26","Jul 26","Aoû 26","Sep 26","Oct 26","Nov 26","Déc 26"];
+const REV_B=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 283.28, 300.53, 318.58, 337.4, 357.01, 377.41, 398.59, 435.37];
+const EBI_R=[-180.13, -238.62, -330.4, -359.03, -251.96, -401.72, -317.4, -264.96, -387.1, -324.21, -337.52, -154.9, -429.23, -435.07, -392.84, -416.79, null, null, null, null, null, null, null, null];
+const EBI_B=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, -416.79, -371.93, -368.98, -326.88, -275.61, -364.22, -319.94, -364.51, -182.72];
+const CASH={L:["Jan 25", "F\u00e9v 25", "Mar 25", "Avr 25", "Mai 25", "Jui 25", "Jui 25", "Ao\u00fb 25", "Sep 25", "Oct 25", "Nov 25", "D\u00e9c 25", "Jan 26", "F\u00e9v 26", "Mar 26", "Avr 26", "Mai 26", "Jui 26", "Jui 26", "Ao\u00fb 26", "Sep 26", "Oct 26", "Nov 26", "D\u00e9c 26", "Jan 27", "F\u00e9v 27", "Mar 27", "Avr 27"],r:[7639.7, 7340.0, 7068.8, 6566.3, 6160.7, 5867.1, 5393.3, 4957.3, 4591.2, 4191.6, 3613.7, 5618.7, 5195.4, 4762.7, 4457.2, null, null, null, null, null, null, null, null, null, null, null, null, null],p:[null, null, null, null, null, null, null, null, null, null, null, null, null, null, 4457.2, 3677.0, 3202.2, 3249.6, 2762.0, 2477.4, 2067.5, 1824.4, 1415.0, 997.7, 609.7, 379.9, 176.9, -563.0]};
+const UP_M=[44.3, 32.5, 37.8, 37.0, 28.1, 25.3, 15.2, 32.5, 30.2, 44.9, 53.5, 52.9, 52.9, 34.5, 28.8, 33.9, null, null, null, null, null, null, null, null];
+const MG_M=[69.7, 70.4, 71.5, 74.8, 75.3, 76.1, 99.9, 101.2, 102.5, 125.5, 127.6, 130.1, 150.9, 154.4, 156.6, 184.2, null, null, null, null, null, null, null, null];
+const PCT_UP=[0.389,0.316,0.346,0.331,0.272,0.250,0.132,0.243,0.228,0.260,0.291,0.284,0.248,0.182,0.146,0.18,0.17,0.16,0.14,0.20,0.22,0.22,0.22,0.23];
+const UP_F=[...UP_M],MG_F=[...MG_M];
+REV_B.forEach((r,i)=>{if(r!==null&&UP_M[i]===null){UP_F[i]=Math.round(PCT_UP[i]*r*10)/10;MG_F[i]=Math.round((1-PCT_UP[i])*r*10)/10;}});
+const UA=UP_F.map((v,i)=>i<16?v:null),UE=UP_F.map((v,i)=>i>=16?v:null);
+const MA=MG_F.map((v,i)=>i<15?v:null),ME=MG_F.map((v,i)=>i>=15?v:null);
+const AUM=[];
+const CA=[["Entry SCPI", 10056, 18132, 15804, 4279, 14578, 48270, 141572, "row", 1], ["Entry Club-Deal Art", 13200, 2400, 10600, 7845, 14250, 34045, 63397, "row", 1], ["Entry Club-Deal Immo", 26800, 9000, 0, 17803, 18087, 53603, 115702, "row", 1], ["Entry PE", 375, 0, 0, 2606, 5428, 2981, 18583, "row", 1], ["Entry Crypto", 1150, 1150, 1150, 593, 1196, 4044, 4712, "row", 1], ["Entry PS", 942, 942, 942, 0, 3226, 2827, 8671, "row", 1], ["Entry Invest", 354, 354, 354, 357, 1106, 1419, 3935, "row", 1], ["Autres", 0, 2500, 0, 450, 0, 2950, 0, "row", 1], ["Upfront fees", 52877, 34478, 28850, 33934, 57873, 150139, 356571, "sub"], ["Management Invest", 100832, 103185, 103961, 129647, 127050, 437625, 518527, "row", 1], ["Management PE", 44392, 45442, 46907, 48706, 51002, 185446, 212974, "row", 1], ["Management Cash", 3187, 3197, 3179, 3087, 3692, 12651, 18349, "row", 1], ["Management SCPI", 2380, 2384, 2384, 2653, 1876, 9801, 7678, "row", 1], ["Management PS", 147, 147, 147, 147, 0, 588, 0, "row", 1], ["Management fees / MRR", 150939, 154355, 156577, 184240, 183621, 646111, 757528, "sub"], ["Revenue Ramify", 203815, 188833, 185427, 218174, 241495, 796250, 1114099, "tot"], ["Management X-Fund", 14759, 15158, 15724, 16713, 16499, 62354, 64547, "row", 1], ["Revenue Valhyr", 14759, 15158, 15724, 16713, 16499, 62354, 64547, "sub"], ["Revenue", 218574, 203991, 201151, 234887, 257994, 858603, 1178646, "grand"], ["KPI Ramify", null, null, null, null, null, null, null, "kpi-hdr"], ["Rec. ARR (Ek)", 1811, 1852, 1879, 2211, 2203, 1938, 2273, "kpi", 1], ["ARR RMF (Ek)", 2446, 2266, 2225, 2618, 2897, 2389, 3342, "kpi", 1]];
+function fN(v){if(v===null||v===undefined)return"—";if(typeof v==="string")return v;const s=Math.round(Math.abs(v)).toLocaleString("fr-FR");return v<0?"("+s+")":s;}
+function fP(v){if(v===null||v===undefined)return"—";const s=Math.round(Math.abs(v*100));return v<0?"("+s+")%":s+"%";}
+function fK(v,d=1){if(v===null)return"—";const s=Math.abs(v).toLocaleString("fr-FR",{minimumFractionDigits:d,maximumFractionDigits:d});return v<0?"("+s+")":s;}
+function fPl(v){if(v===null)return"—";return(v>=0?"+":"")+(v*100).toFixed(1)+"%";}
+function eC(v){return typeof v==="number"?(v>=0?"vpos":"vneg"):"";}
+const PLD=[{l:"Revenue",k:"revenue",t:"tot"},{l:"Staff Costs",k:"staffCosts",t:"subtot",i:1},{l:"SG&A",k:"sga",t:"subtot",i:1},{l:"dont Fees",k:"fees",i:2},{l:"dont Ads & Marketing",k:"ads",i:2},{l:"dont Rentals",k:"rentals",i:2},{l:"dont Autres",k:"otherSga",i:2},{l:"Capitalized R&D",k:"caprd",i:1},{l:"EBITDA",k:"ebitda",t:"tot"},{l:"Net Result",k:"netResult",t:"tot",r:true}];
+const ptb=document.getElementById("pl-tbody");
+PLD.forEach(ln=>{const d=YTD[ln.k],a=d[3],b=d[4],a25=d[2];const ec=b?a-b:null,ecP=b?ec/Math.abs(b):null,y2y=a25?(a-a25)/Math.abs(a25):null;const tr=document.createElement("tr");if(ln.t==="tot"){tr.classList.add("tot");if(ln.r)tr.classList.add("red");}if(ln.t==="subtot")tr.classList.add("subtot");const ps=ln.i===2?"padding-left:20px;color:#6B7280;font-size:10.5px":ln.i===1?"padding-left:12px;color:#4B5563":"";tr.innerHTML="<td style='"+ps+"'>"+ln.l+"</td><td>"+fK(d[0])+"</td><td>"+fK(d[1])+"</td><td>"+fK(d[2])+"</td><td><strong>"+fK(d[3])+"</strong></td><td style='color:#6B7280'>"+fK(d[4])+"</td><td class='col-hl "+eC(ec)+"'>"+fK(ec)+"</td><td class='col-hl "+eC(ecP)+"'>"+fPl(ecP)+"</td><td class='"+eC(y2y)+"'>"+fPl(y2y)+"</td>";ptb.appendChild(tr);});
+const ctb=document.getElementById("ca-tbody");
+CA.forEach(function(row){
+  const label=row[0],janA=row[1],febA=row[2],marA=row[3],aprA=row[4],aprRF=row[5],ytdA=row[6],ytdB=row[7],type=row[8],ind=row[9];
+  const tr=document.createElement("tr");
+  if(type==="kpi-hdr"){tr.classList.add("ca-kpi-hdr");tr.innerHTML="<td colspan='12' style='background:#1F5C46;color:#fff;font-weight:700;font-size:8px;padding:4px 6px'>KPI RAMIFY</td>";ctb.appendChild(tr);return;}
+  if(type==="sub")tr.classList.add("ca-sub");if(type==="tot")tr.classList.add("ca-tot");if(type==="grand")tr.classList.add("ca-grand");if(type==="kpi")tr.classList.add("ca-kpi");if(type==="kpi-hi")tr.classList.add("ca-kpi-hi");
+  const dk=(type==="grand"||type==="tot");const bc=dk?"#fff":"#6B7280";const ic=ind===1?"ci1":"";
+  let aEN="—",aEH="—";
+  if(typeof aprA==="number"&&typeof aprRF==="number"&&aprRF!==0){const e=aprA-aprRF,p=e/Math.abs(aprRF);aEN="<span class='"+(e>=0?"cv-pos":"cv-neg")+"'>"+fN(e)+"</span>";aEH="<span class='"+(p>=0?"cv-pos":"cv-neg")+"'>"+fP(p)+"</span>";}
+  let yEN="—",yEP="—";
+  if(typeof ytdA==="number"&&typeof ytdB==="number"&&ytdB!==0){const e=ytdA-ytdB,p=e/Math.abs(ytdB);yEN="<span class='"+(e>=0?"cv-pos":"cv-neg")+"'>"+fN(e)+"</span>";yEP="<span class='"+(p>=0?"cv-pos":"cv-neg")+"'>"+fP(p)+"</span>";}
+  const rfColor=type==="grand"?"#fff":"#333";
+  const aRFH=aprRF!=null&&aprRF!==0?"<span style='color:"+rfColor+"'>"+fN(aprRF)+"</span>":"—";
+  const ybH=ytdB!=null&&ytdB!==0?"<span style='color:"+bc+"'>"+fN(ytdB)+"</span>":"—";
+  tr.innerHTML="<td class='"+ic+"'>"+label+"</td><td>"+fN(janA)+"</td><td>"+fN(febA)+"</td><td>"+fN(marA)+"</td><td>"+fN(aprA)+"</td><td class='avr-sep'>"+aRFH+"</td><td style='background:#FFF2CC'>"+aEN+"</td><td style='background:#FFF2CC'>"+aEH+"</td><td class='ytd-sep'><strong>"+fN(ytdA)+"</strong></td><td>"+ybH+"</td><td style='background:#FFF2CC'>"+yEN+"</td><td style='background:#FFF2CC'>"+yEP+"</td>";
+  ctb.appendChild(tr);
+});
+
+window.addEventListener('load',function(){if(typeof Chart==='undefined')return;
+Chart.defaults.font.family="Calibri,Arial,sans-serif";Chart.defaults.font.size=10;Chart.defaults.color="#555";
+new Chart(document.getElementById("c-yoy-rev"),{type:"bar",data:{labels:["Q1 23A","Q1 24A","Q1 25A","Q1 26A","Q1 26B"],datasets:[{data:YTD.revenue,backgroundColor:["#375623","#375623","#375623","#375623","rgba(55,86,35,.3)"],borderColor:["#375623","#375623","#375623","#375623","#375623"],borderWidth:[0,0,0,0,1.5],borderRadius:3}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}}}}});
+new Chart(document.getElementById("c-yoy-ebitda"),{type:"bar",data:{labels:["Q1 23A","Q1 24A","Q1 25A","Q1 26A","Q1 26B"],datasets:[{data:YTD.ebitda,backgroundColor:["#C00000","#C00000","#C00000","#C00000","rgba(192,0,0,.3)"],borderColor:["#C00000","#C00000","#C00000","#C00000","#C00000"],borderWidth:[0,0,0,0,1.5],borderRadius:3}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}}}}});
+new Chart(document.getElementById("c-costs-pie"),{type:"doughnut",data:{labels:["Staff Costs","Ads & Mktg","Fees","Rentals","Autres"],datasets:[{data:[1016.6,464.9,197.5,213,79.7],backgroundColor:["#C00000","#F59E0B","#2E75B6","#375623","#9CA3AF"],borderWidth:2,borderColor:"#fff"}]},options:{cutout:"58%",plugins:{legend:{position:"right",labels:{boxWidth:9,font:{size:9},padding:5}}}}});
+new Chart(document.getElementById("c-rev-monthly"),{type:"bar",data:{labels:ALL_L,datasets:[{data:UA,backgroundColor:"#2E75B6",stack:"s",yAxisID:"y"},{data:UE,backgroundColor:"rgba(46,117,182,.4)",stack:"s",borderColor:"#2E75B6",borderWidth:1,yAxisID:"y"},{data:MA,backgroundColor:"#375623",stack:"s",yAxisID:"y"},{data:ME,backgroundColor:"rgba(55,86,35,.4)",stack:"s",borderColor:"#375623",borderWidth:1,yAxisID:"y"},{data:AUM,type:"line",borderColor:"#BF8F00",tension:0,pointRadius:3,fill:false,yAxisID:"y2",order:-1}]},options:{plugins:{legend:{display:false}},scales:{x:{stacked:true,ticks:{maxRotation:45,font:{size:8}}},y:{stacked:true,grid:GRD,ticks:{callback:function(v){return v+"k";}},position:"left"},y2:{grid:{display:false},ticks:{callback:function(v){return v+" M€";},color:"#BF8F00"},position:"right",min:0,max:700}}}});
+new Chart(document.getElementById("c-ebitda-monthly"),{type:"line",data:{labels:ALL_L,datasets:[{data:EBI_R,borderColor:"#C00000",tension:0,pointRadius:3,fill:false},{data:EBI_B,borderColor:"#C00000",borderDash:[5,3],tension:0,pointRadius:2,fill:false}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}},x:{ticks:{maxRotation:45,font:{size:8}}}}}});
+new Chart(document.getElementById("c-cash"),{type:"line",data:{labels:CASH.L,datasets:[{data:CASH.r,borderColor:"#1F5C46",backgroundColor:"rgba(31,92,70,.08)",tension:0,fill:true,pointRadius:2},{data:CASH.p,borderColor:"#F59E0B",borderDash:[5,3],tension:0,fill:false,pointRadius:2}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}},x:{ticks:{maxRotation:60,font:{size:8}}}}}});
+new Chart(document.getElementById("c-sga"),{type:"bar",data:{labels:["Fees","Ads & Mktg","Rentals","Travel","Training"],datasets:[{label:"Q1 23A",data:[93.5,98.3,51.8,1.8,0],backgroundColor:"#C6EFCE",borderRadius:2},{label:"Q1 24A",data:[44.6,147.7,72.5,1.3,1.2],backgroundColor:"#70AD47",borderRadius:2},{label:"Q1 25A",data:[91.9,258.2,140.2,5.2,6],backgroundColor:"#F59E0B",borderRadius:2},{label:"Q1 26A",data:[197.5,464.9,213,36,20],backgroundColor:"#C00000",borderRadius:2},{label:"Q1 26B",data:[211.6,496.8,190,30.3,3.9],backgroundColor:"rgba(46,117,182,.4)",borderColor:"#2E75B6",borderWidth:1.5,borderRadius:2}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}}}}});
+const caUp=CA.find(function(r){return r[0]==="Upfront fees";});
+const caMg=CA.find(function(r){return r[0]==="Management fees / MRR";});
 const upA=caUp?Math.round(caUp[4]/100)/10:0,mgA=caMg?Math.round(caMg[4]/100)/10:0;
 const upRF=caUp?Math.round((caUp[5]||0)/100)/10:0,mgRF=caMg?Math.round((caMg[5]||0)/100)/10:0;
 const upYA=caUp?Math.round(caUp[6]/100)/10:0,mgYA=caMg?Math.round(caMg[6]/100)/10:0;
