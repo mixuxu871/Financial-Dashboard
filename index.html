@@ -71,9 +71,9 @@
 <div class="chart-card" style="margin-bottom:14px;padding:0"><div class="tbl-wrap"><table class="excel"><thead><tr><th>Ligne</th><th>Q1 23A</th><th>Q1 24A</th><th>Q1 25A</th><th>Q1 26A</th><th>Q1 26B</th><th class="th-hl">Écart €k</th><th class="th-hl">%</th><th>vs Q1 25A</th></tr></thead><tbody id="pl-tbody"></tbody></table></div></div>
 <div class="section-title">P&L — Évolution et Trésorerie</div>
 <div class="charts-row three">
-  <div class="chart-card"><div class="chart-title">Revenue YTD Q1 — YoY</div><canvas id="c-yoy-rev" height="200"></canvas></div>
-  <div class="chart-card"><div class="chart-title">EBITDA YTD Q1 — YoY</div><canvas id="c-yoy-ebitda" height="200"></canvas></div>
-  <div class="chart-card"><div class="chart-title">Répartition coûts Q1 26A</div><canvas id="c-costs-pie" height="200"></canvas></div>
+  <div class="chart-card"><div class="chart-title" id="chart-rev-yoy-title">Revenue YTD — YoY</div><canvas id="c-yoy-rev" height="200"></canvas></div>
+  <div class="chart-card"><div class="chart-title" id="chart-ebi-yoy-title">EBITDA YTD — YoY</div><canvas id="c-yoy-ebitda" height="200"></canvas></div>
+  <div class="chart-card"><div class="chart-title" id="chart-costs-title">Répartition coûts 26A</div><canvas id="c-costs-pie" height="200"></canvas></div>
 </div>
 <div class="charts-row">
   <div class="chart-card">
@@ -164,6 +164,9 @@ CA.forEach(function(row){
   var per=n26>0?'Jan\u2013'+lastMon.split(' ')[0]:'Q1';
   var perFull=per+' 2026';
   var elh=document.getElementById('header-period');if(elh)elh.textContent='YTD '+perFull;
+  var e3=document.getElementById('chart-rev-yoy-title');if(e3)e3.textContent='Revenue YTD '+perFull+' — YoY';
+  var e4=document.getElementById('chart-ebi-yoy-title');if(e4)e4.textContent='EBITDA YTD '+perFull+' — YoY';
+  var e5=document.getElementById('chart-costs-title');if(e5)e5.textContent='Répartition coûts '+perFull;
   var el=document.getElementById('kpi-section-title');if(el)el.innerHTML='KPIs P&amp;L \u2014 YTD '+perFull;
   var el2=document.getElementById('pl-section-title');if(el2)el2.textContent='P&L Comparatif YTD '+per+' \xb7 \u20acK';
   function fv(v){if(v===null||v===undefined)return'\u2014';var s=Math.abs(v).toLocaleString('fr-FR',{minimumFractionDigits:1,maximumFractionDigits:1});return(v<0?'('+s+')':s)+' \u20ack';}
@@ -209,8 +212,4 @@ const upRF=caUp?Math.round((caUp[5]||0)/100)/10:0,mgRF=caMg?Math.round((caMg[5]|
 const upYA=caUp?Math.round(caUp[6]/100)/10:0,mgYA=caMg?Math.round(caMg[6]/100)/10:0;
 const upYB=caUp?Math.round(caUp[7]/100)/10:0,mgYB=caMg?Math.round(caMg[7]/100)/10:0;
 new Chart(document.getElementById("c-ca-mars"),{type:"bar",data:{labels:["Upfront","Mgmt / Récurrent"],datasets:[{label:"Apr-26",data:[upA,mgA],backgroundColor:["#2E75B6","#375623"],borderRadius:4,barPercentage:.4},{label:"Apr.26RF",data:[upRF,mgRF],backgroundColor:["rgba(46,117,182,.25)","rgba(55,86,35,.25)"],borderColor:["#2E75B6","#375623"],borderWidth:2,borderRadius:4,barPercentage:.4}]},options:{plugins:{legend:{position:"top",labels:{boxWidth:10,font:{size:9},padding:8}}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}}}}});
-new Chart(document.getElementById("c-ca-ytd"),{type:"bar",data:{labels:["Upfront","Mgmt / Récurrent"],datasets:[{label:"YTD 26A",data:[upYA,mgYA],backgroundColor:["#2E75B6","#375623"],borderRadius:4,barPercentage:.4},{label:"YTD 26B",data:[upYB,mgYB],backgroundColor:["rgba(46,117,182,.25)","rgba(55,86,35,.25)"],borderColor:["#2E75B6","#375623"],borderWidth:2,borderRadius:4,barPercentage:.4}]},options:{plugins:{legend:{position:"top",labels:{boxWidth:10,font:{size:9},padding:8}}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}}}}});
-});
-</script>
-</body>
-</html>
+new Chart(document.getElementById("c-ca-ytd"),{type:"bar",data:{labels:["Upfront","Mgmt / Récurrent"],datasets:[{label:"YTD 26A",data:[upYA,mgYA],backgroundColor:["#2E75B6","#375623"],borderRadius:4,barPercentage:.4},{label:"YTD 26B",data:[upYB,mgYB],backgroundColor:["rgba(46,117,182,.25)","rgba(55,86,35,.25)"],borderColor:["#2E75B6","#375623"],borderWidth:2,borderRadius:4,b
