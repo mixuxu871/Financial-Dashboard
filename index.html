@@ -61,14 +61,14 @@
 </head>
 <body>
 <div class="header">
-  <div><div class="header-title">RAMIFY — Dashboard Financier &amp; CA</div><div class="meta">Sources : Auto-genere le 19/05/2026 10:49</div></div>
+  <div><div class="header-title">RAMIFY — Dashboard Financier &amp; CA</div><div class="meta">Sources : Auto-genere le 19/05/2026 10:56</div></div>
   <div style="text-align:right"><div class="meta">Période arrêtée</div><div id="header-period" style="color:#fff;font-weight:700;font-size:13px">Q1 2026 — Mars 2026</div></div>
 </div>
 <div class="page">
 <div class="section-title" id="kpi-section-title" style="border-top:none;padding-top:0;margin-top:0">KPIs P&amp;L — YTD</div>
 <div class="kpi-grid" id="kpi-grid"></div>
 <div class="section-title" id="pl-section-title">P&L Comparatif YTD · €k</div>
-<div class="chart-card" style="margin-bottom:14px;padding:0"><div class="tbl-wrap"><table class="excel"><thead><tr><th>Ligne</th><th>Q1 23A</th><th>Q1 24A</th><th>Q1 25A</th><th>Q1 26A</th><th>Q1 26B</th><th class="th-hl">Écart €k</th><th class="th-hl">%</th><th>vs Q1 25A</th></tr></thead><tbody id="pl-tbody"></tbody></table></div></div>
+<div class="chart-card" style="margin-bottom:14px;padding:0"><div class="tbl-wrap"><table class="excel"><thead><tr><th>Ligne</th><th id="pl-h23">YTD 23A</th><th id="pl-h24">YTD 24A</th><th id="pl-h25">YTD 25A</th><th id="pl-h26a">YTD 26A</th><th id="pl-h26b">YTD 26B</th><th class="th-hl" id="pl-hec">Écart €k</th><th class="th-hl">%</th><th id="pl-hvs">vs YTD 25A</th></tr></thead><tbody id="pl-tbody"></tbody></table></div></div>
 <div class="section-title">P&L — Évolution et Trésorerie</div>
 <div class="charts-row three">
   <div class="chart-card"><div class="chart-title" id="chart-rev-yoy-title">Revenue YTD — YoY</div><canvas id="c-yoy-rev" height="200"></canvas></div>
@@ -118,9 +118,9 @@
 const GRD={color:"#E5E7EB"};
 const YTD={revenue:[0, 225.0, 478.3, 880.5, 851.1],staffCosts:[-9.0, -1.7, -1.6, -1.5, -1.1],sga:[-24.6, -7.3, -6.1, -4.7, -3.5],fees:[-10.8, -61.3, -170.2, -219.2, -293.5],ads:[-38.8, -34.9, -167.3, -240.7, -183.5],rentals:[-19.1, -25.9, -53.4, -53.9, -63.2],otherSga:[0, 0, 0, 0, 0],caprd:[0, 0, 34.3, 41.6, 41.7],ebitda:[-6.1, -0.6, -0.8, -0.5, -0.3],netResult:[-360.7, -688.4, -1339.5, -2467.2, -2433.7]};
 const ALL_L=["Jan 25","Fév 25","Mar 25","Avr 25","Mai 25","Jun 25","Jul 25","Aoû 25","Sep 25","Oct 25","Nov 25","Déc 25","Jan 26","Fév 26","Mar 26","Avr 26","Mai 26","Jun 26","Jul 26","Aoû 26","Sep 26","Oct 26","Nov 26","Déc 26"];
-const REV_B=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 234.68, 283.28, 300.53, 318.58, 337.4, 357.01, 377.41, 398.59, 435.37];
-const EBI_R=[-180.13, -238.62, -330.4, -359.03, -251.96, -401.72, -317.4, -264.96, -387.1, -324.21, -337.52, -154.9, -429.23, -435.07, -392.84, null, null, null, null, null, null, null, null, null];
-const EBI_B=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, -392.84, -416.79, -371.93, -368.98, -326.88, -275.61, -364.22, -319.94, -364.51, -182.72];
+const REV_B=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 283.28, 300.53, 318.58, 337.4, 357.01, 377.41, 398.59, 435.37];
+const EBI_R=[-180.13, -238.62, -330.4, -359.03, -251.96, -401.72, -317.4, -264.96, -387.1, -324.21, -337.52, -154.9, -429.23, -435.07, -392.84, -416.79, null, null, null, null, null, null, null, null];
+const EBI_B=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, -416.79, -371.93, -368.98, -326.88, -275.61, -364.22, -319.94, -364.51, -182.72];
 const CASH={L:["Jan 25", "F\u00e9v 25", "Mar 25", "Avr 25", "Mai 25", "Jui 25", "Jui 25", "Ao\u00fb 25", "Sep 25", "Oct 25", "Nov 25", "D\u00e9c 25", "Jan 26", "F\u00e9v 26", "Mar 26", "Avr 26", "Mai 26", "Jui 26", "Jui 26", "Ao\u00fb 26", "Sep 26", "Oct 26", "Nov 26", "D\u00e9c 26", "Jan 27", "F\u00e9v 27", "Mar 27", "Avr 27"],r:[7639.7, 7340.0, 7068.8, 6566.3, 6160.7, 5867.1, 5393.3, 4957.3, 4591.2, 4191.6, 3613.7, 5618.7, 5195.4, 4762.7, 4457.2, null, null, null, null, null, null, null, null, null, null, null, null, null],p:[null, null, null, null, null, null, null, null, null, null, null, null, null, null, 4457.2, 3677.0, 3202.2, 3249.6, 2762.0, 2477.4, 2067.5, 1824.4, 1415.0, 997.7, 609.7, 379.9, 176.9, -563.0]};
 const UP_M=[44.3, 32.5, 37.8, 37.0, 28.1, 25.3, 15.2, 32.5, 30.2, 44.9, 53.5, 52.9, 51.7, 36.3, 27.7, 33.7, null, null, null, null, null, null, null, null];
 const MG_M=[69.7, 70.4, 71.5, 74.8, 75.3, 76.1, 99.9, 101.2, 102.5, 125.5, 127.6, 130.1, 157.1, 164.0, 163.3, 184.2, null, null, null, null, null, null, null, null];
@@ -167,6 +167,11 @@ CA.forEach(function(row){
   var e3=document.getElementById('chart-rev-yoy-title');if(e3)e3.textContent='Revenue YTD '+perFull+' — YoY';
   var e4=document.getElementById('chart-ebi-yoy-title');if(e4)e4.textContent='EBITDA YTD '+perFull+' — YoY';
   var e5=document.getElementById('chart-costs-title');if(e5)e5.textContent='Répartition coûts '+perFull;
+  ['pl-h23','pl-h24','pl-h25'].forEach(function(id,i){var h=document.getElementById(id);if(h)h.textContent='YTD '+(23+i)+'A';});
+  var h26a=document.getElementById('pl-h26a');if(h26a)h26a.textContent='YTD '+perFull;
+  var h26b=document.getElementById('pl-h26b');if(h26b)h26b.textContent='YTD 26B';
+  var hec=document.getElementById('pl-hec');if(hec)hec.textContent='Écart €k';
+  var hvs=document.getElementById('pl-hvs');if(hvs)hvs.textContent='vs YTD '+per+' 25A';
   var el=document.getElementById('kpi-section-title');if(el)el.innerHTML='KPIs P&amp;L \u2014 YTD '+perFull;
   var el2=document.getElementById('pl-section-title');if(el2)el2.textContent='P&L Comparatif YTD '+per+' \xb7 \u20acK';
   function fv(v){if(v===null||v===undefined)return'\u2014';var s=Math.abs(v).toLocaleString('fr-FR',{minimumFractionDigits:1,maximumFractionDigits:1});return(v<0?'('+s+')':s)+' \u20ack';}
