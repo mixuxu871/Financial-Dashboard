@@ -157,6 +157,23 @@ CA.forEach(function(row){
   ctb.appendChild(tr);
 });
 
+
+// Période dynamique
+(function(){
+  var n=EBI_R.slice(12).filter(function(v){return v!==null;}).length;
+  var lm=n>0?ALL_L[11+n]:"";
+  var per=n>0?"Jan–"+lm.split(" ")[0]:"Q1";
+  var pf=per+" 2026";
+  function u(id,t){var e=document.getElementById(id);if(e)e.textContent=t;}
+  u("header-period","YTD "+pf);
+  u("kpi-section-title","KPIs P&L — YTD "+pf);
+  u("pl-section-title","P&L Comparatif YTD "+per+" · €K");
+  u("chart-rev-yoy-title","Revenue YTD "+pf+" — YoY");
+  u("chart-ebi-yoy-title","EBITDA YTD "+pf+" — YoY");
+  u("chart-costs-title","Répartition coûts "+pf);
+  ["pl-h23","pl-h24","pl-h25"].forEach(function(id,i){u(id,"YTD "+(23+i)+"A");});
+  u("pl-h26a","YTD "+pf); u("pl-h26b","YTD 26B"); u("pl-hvs","vs YTD "+per+" 25A");
+})();
 window.addEventListener('load',function(){if(typeof Chart==='undefined')return;
 Chart.defaults.font.family="Calibri,Arial,sans-serif";Chart.defaults.font.size=10;Chart.defaults.color="#555";
 new Chart(document.getElementById("c-yoy-rev"),{type:"bar",data:{labels:["Q1 23A","Q1 24A","Q1 25A","Q1 26A","Q1 26B"],datasets:[{data:YTD.revenue,backgroundColor:["#375623","#375623","#375623","#375623","rgba(55,86,35,.3)"],borderColor:["#375623","#375623","#375623","#375623","#375623"],borderWidth:[0,0,0,0,1.5],borderRadius:3}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k";}}}}}});
