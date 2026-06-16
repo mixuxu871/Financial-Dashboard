@@ -61,7 +61,7 @@
 </head>
 <body>
 <div class="header">
-  <div><div class="header-title">RAMIFY — Dashboard Financier &amp; CA</div><div class="meta">Sources : Auto-genere le 16/06/2026 17:05</div></div>
+  <div><div class="header-title">RAMIFY — Dashboard Financier &amp; CA</div><div class="meta">Sources : Auto-genere le 16/06/2026 17:09</div></div>
   <div style="text-align:right"><div class="meta">Période arrêtée</div><div id="header-period" style="color:#fff;font-weight:700;font-size:13px">Q1 2026 — Mars 2026</div></div>
 </div>
 <div class="page">
@@ -197,7 +197,7 @@ const upRF=caUp?Math.round((caUp[5]||0)/100)/10:0,mgRF=caMg?Math.round((caMg[5]|
 const upYA=caUp?Math.round(caUp[6]/100)/10:0,mgYA=caMg?Math.round(caMg[6]/100)/10:0;
 const upYB=caUp?Math.round(caUp[7]/100)/10:0,mgYB=caMg?Math.round(caMg[7]/100)/10:0;
 var co={plugins:{legend:{position:"top",labels:{boxWidth:10,font:{size:9},padding:8}}},scales:{y:{grid:GRD,ticks:{callback:function(v){return v+"k"}}}}}; 
-new Chart(document.getElementById("c-ca-mars"),{type:"bar",data:{labels:["Upfront","Mgmt / R\u00e9current"],datasets:[{label:"Apr-26",data:[upA,mgA],backgroundColor:["#2E75B6","#375623"],borderRadius:4,barPercentage:.4},{label:"Mai-26",data:[upRF,mgRF],backgroundColor:["rgba(46,117,182,.25)","rgba(55,86,35,.25)"],borderColor:["#2E75B6","#375623"],borderWidth:2,borderRadius:4,barPercentage:.4}]},options:co});
+new Chart(document.getElementById("c-ca-mars"),{type:"bar",data:{labels:["Upfront","Mgmt / R\u00e9current"],datasets:[{label:"Mai A",data:[upA,mgA],backgroundColor:["#2E75B6","#375623"],borderRadius:4,barPercentage:.4},{label:"Mai 26B",data:[upRF,mgRF],backgroundColor:["rgba(46,117,182,.25)","rgba(55,86,35,.25)"],borderColor:["#2E75B6","#375623"],borderWidth:2,borderRadius:4,barPercentage:.4}]},options:co});
 new Chart(document.getElementById("c-ca-ytd"),{type:"bar",data:{labels:["Upfront","Mgmt / R\u00e9current"],datasets:[{label:"YTD 26A",data:[upYA,mgYA],backgroundColor:["#2E75B6","#375623"],borderRadius:4,barPercentage:.4},{label:"YTD 26B",data:[upYB,mgYB],backgroundColor:["rgba(46,117,182,.25)","rgba(55,86,35,.25)"],borderColor:["#2E75B6","#375623"],borderWidth:2,borderRadius:4,barPercentage:.4}]},options:co});
 });
 </script>
