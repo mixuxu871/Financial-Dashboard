@@ -103,15 +103,15 @@
   <table class="ca">
     <colgroup><col style="width:38px"><col style="width:22px"><col style="width:22px"><col style="width:22px"><col style="width:22px"><col style="width:22px"><col style="width:22px"><col style="width:16px"><col style="width:25px"><col style="width:25px"><col style="width:22px"><col style="width:16px"></colgroup>
     <thead>
-      <tr><th style="text-align:left" rowspan="2">En €</th><th colspan="7" class="th-mar" style="text-align:center;border-bottom:1px solid #1A4F8A">Mensuel Jan–Avr 2026</th><th colspan="4" class="th-ytd ytd-sep" style="text-align:center;border-bottom:1px solid #1F3A14">YTD Jan–Avr 2026</th></tr>
-      <tr><th class="th-mar">Jan A</th><th class="th-mar">Fév A</th><th class="th-mar">Mar A</th><th class="th-mar">Apr-26</th><th class="th-mar avr-sep">Apr.26RF</th><th class="th-hl">Écart</th><th class="th-hl">%</th><th class="th-ytd ytd-sep">26A</th><th class="th-ytd">26B</th><th class="th-hl">Écart</th><th class="th-hl">%</th></tr>
+      <tr><th style="text-align:left" rowspan="2">En €</th><th colspan="7" class="th-mar" id="ca-th-mensuel" style="text-align:center;border-bottom:1px solid #1A4F8A">Mensuel Jan–Avr 2026</th><th colspan="4" class="th-ytd ytd-sep" id="ca-th-ytd" style="text-align:center;border-bottom:1px solid #1F3A14">YTD Jan–Avr 2026</th></tr>
+      <tr><th class="th-mar">Jan A</th><th class="th-mar">Fév A</th><th class="th-mar">Mar A</th><th class="th-mar">Apr-26</th><th class="th-mar avr-sep" id="ca-th-mai">Mai-26</th><th class="th-hl">Écart</th><th class="th-hl">%</th><th class="th-ytd ytd-sep">26A</th><th class="th-ytd">26B</th><th class="th-hl">Écart</th><th class="th-hl">%</th></tr>
     </thead>
     <tbody id="ca-tbody"></tbody>
   </table>
 </div>
 <div class="charts-row">
-  <div class="chart-card"><div class="chart-title">Apr-26 vs Apr.26RF — Upfront &amp; Mgmt (€k)</div><canvas id="c-ca-mars" height="200"></canvas></div>
-  <div class="chart-card"><div class="chart-title">YTD Jan–Avr 2026 — Upfront &amp; Mgmt vs Budget (€k)</div><canvas id="c-ca-ytd" height="200"></canvas></div>
+  <div class="chart-card"><div class="chart-title" id="chart-ca-mars-title">Apr-26 vs Mai-26 — Upfront &amp; Mgmt (€k)</div><canvas id="c-ca-mars" height="200"></canvas></div>
+  <div class="chart-card"><div class="chart-title" id="chart-ca-ytd-title">YTD Jan–Avr 2026 — Upfront &amp; Mgmt vs Budget (€k)</div><canvas id="c-ca-ytd" height="200"></canvas></div>
 </div>
 </div>
 <script>
