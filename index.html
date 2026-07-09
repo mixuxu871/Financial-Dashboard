@@ -61,7 +61,7 @@
 </head>
 <body>
 <div class="header">
-  <div><div class="header-title">RAMIFY — Dashboard Financier &amp; CA</div><div class="meta">Sources : Auto-genere le 09/07/2026 09:35</div></div>
+  <div><div class="header-title">RAMIFY — Dashboard Financier &amp; CA</div><div class="meta">Sources : Auto-genere le 09/07/2026 11:33</div></div>
   <div style="text-align:right"><div class="meta">Période arrêtée</div><div id="header-period" style="color:#fff;font-weight:700;font-size:13px">Q1 2026 — Mars 2026</div></div>
 </div>
 <div class="page">
@@ -118,10 +118,10 @@
 const GRD={color:"#E5E7EB"};
 const YTD={revenue:[56.5,290.3,610.2,1218.6,1526.9],staffCosts:[-431.7,-637.9,-1051.7,-1701.5,-1791.2],sga:[-475.7,-546.2,-1026.4,-1582.7,-1622.9],fees:[-197.7,-186.9,-213.5,-248.1,-327.8],ads:[-168.1,-221.4,-527.6,-846.6,-865.9],rentals:[-89.4,-119.5,-241.4,-358.6,-317.2],otherSga:[-2.1,-0.0,-63.7,-34.8,-16.6],caprd:[0.0,0.0,171.5,374.2,208.3],ebitda:[-853.0,-893.8,-1360.1,-1726.2,-1695.5],netResult:[-857.3,-986.9,-1432.2,-1809.1,-1820.4]};
 const ALL_L=["Jan 25","Fév 25","Mar 25","Avr 25","Mai 25","Jun 25","Jul 25","Aoû 25","Sep 25","Oct 25","Nov 25","Déc 25","Jan 26","Fév 26","Mar 26","Avr 26","Mai 26","Jun 26","Jul 26","Aoû 26","Sep 26","Oct 26","Nov 26","Déc 26"];
-const REV_B=[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,301.05,317.72,334.9,352.59,370.79,389.5];
-const EBI_R=[-180.13,-238.62,-330.4,-359.03,-251.96,-401.72,-317.39,-264.96,-387.1,-324.21,-337.52,344.1,-409.98,-407.8,-360.91,-416.8,-130.69,-392.64,null,null,null,null,null,null];
-const EBI_B=[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,-392.64,-362.17,-252.6,-337.49,-305.73,-337.31,-253.89];
-const CASH={L:["Jan 25","F\u00e9v 25","Mar 25","Avr 25","Mai 25","Jui 25","Jui 25","Ao\u00fb 25","Sep 25","Oct 25","Nov 25","D\u00e9c 25","Jan 26","F\u00e9v 26","Mar 26","Avr 26","Mai 26","Jui 26","Jui 26","Ao\u00fb 26","Sep 26","Oct 26","Nov 26","D\u00e9c 26","Jan 27","F\u00e9v 27","Mar 27","Avr 27"],r:[7639.7,7340.0,7068.8,6566.3,6160.7,5867.1,5393.3,4957.3,4591.2,4191.6,3613.7,5618.7,5195.4,4762.7,4457.2,3677.0,3200.2,null,null,null,null,null,null,null,null,null,null,null],p:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,3200.2,2868.6,2221.7,2473.6,2138.3,1894.5,1560.2,1149.4,667.7,-62.6,-505.3,-1455.8]};
+const REV_B=[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,296.69,313.2,330.22,347.76,365.79,384.34];
+const EBI_R=[-180.13,-238.62,-330.4,-359.03,-251.96,-401.72,-317.39,-264.96,-387.1,-324.21,-337.52,344.1,-409.98,-407.8,-360.91,-416.8,-130.69,-399.76,null,null,null,null,null,null];
+const EBI_B=[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,-399.76,-366.53,-257.12,-342.17,-310.56,-342.3,-259.04];
+const CASH={L:["Jan 25","F\u00e9v 25","Mar 25","Avr 25","Mai 25","Jui 25","Jui 25","Ao\u00fb 25","Sep 25","Oct 25","Nov 25","D\u00e9c 25","Jan 26","F\u00e9v 26","Mar 26","Avr 26","Mai 26","Jui 26","Jui 26","Ao\u00fb 26","Sep 26","Oct 26","Nov 26","D\u00e9c 26","Jan 27","F\u00e9v 27","Mar 27","Avr 27"],r:[7639.7,7340.0,7068.8,6566.3,6160.7,5867.1,5393.3,4957.3,4591.2,4191.6,3613.7,5618.7,5195.4,4762.7,4457.2,3677.0,3200.2,null,null,null,null,null,null,null,null,null,null,null],p:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,3200.2,2868.6,2221.7,2466.5,2126.8,1878.5,1539.5,1123.9,637.2,-73.3,-492.7,-1439.8]};
 const UP_M=[44.3,32.5,37.8,37.0,28.1,25.3,15.2,32.5,30.2,44.9,53.5,52.9,78.5,77.8,71.6,39.5,43.4,45.3,null,null,null,null,null,null];
 const MG_M=[69.7,70.4,71.6,74.8,75.3,76.2,99.6,101.3,102.8,125.2,127.6,130.2,150.1,151.3,152.7,180.7,192.5,199.9,null,null,null,null,null,null];
 const PCT_UP=[0.389,0.316,0.346,0.331,0.272,0.250,0.132,0.243,0.228,0.260,0.291,0.284,0.248,0.182,0.146,0.18,0.17,0.16,0.14,0.20,0.22,0.22,0.22,0.23];
